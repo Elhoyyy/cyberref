@@ -30,7 +30,9 @@
 
   // Token alterna → valores. Mayúsculas distintivas + minúsculas seguras
   // (verificadas: no colisionan con texto real de comandos).
-  const RE = /\b(?:LHOST|IP|LPORT|PORT|SRVPORT|RHOST|USER|PASS|DOMAIN|domain|URL|url|WORDLIST|wl|LFILE|PATTERN|pattern)\b/g;
+  // Límites propios: ni letras/dígitos ni guion alrededor, para no tocar
+  // subcomandos como `git remote set-url` o flags con guion.
+  const RE = /(?<![\w-])(?:LHOST|IP|LPORT|PORT|SRVPORT|RHOST|USER|PASS|DOMAIN|domain|URL|url|WORDLIST|wl|LFILE|PATTERN|pattern)(?![\w-])/g;
   function mapTok(m) {
     switch (m) {
       case 'LHOST': case 'IP':       return values.LHOST;

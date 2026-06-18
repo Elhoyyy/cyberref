@@ -10,18 +10,20 @@
 
 <nav id="main-nav">
   <div class="nav-brand">~/<span>cyberref</span></div>
+  
   <a href="#text">Text</a>
   <a href="#red">Red</a>
   <a href="#privesc">Privesc</a>
   <a href="#web">Web</a>
   <a href="#windows">Windows</a>
-  <a href="#ctf">CTF</a>
   <a href="#crypto">Crypto</a>
   <a href="#forensics">Forensics</a>
-  <a href="#regex">Regex</a>
-  <a href="#misc">Misc</a>
+  <a href="#git">Git</a>
   <a href="#payloads">Payloads</a>
   <a href="#wordlists">Wordlists</a>
+  <a href="#ctf">CTF</a>
+  <a href="#regex">Regex</a>
+  <a href="#misc">Misc</a>
 </nav>
 
 <div class="search-wrap">
@@ -366,7 +368,6 @@
 
   </div>
 </section>
-
 <!-- ═══════════════════════════════════════════
      WEB ATTACKS (referencia / detección)
 ═══════════════════════════════════════════ -->
@@ -499,165 +500,6 @@
   </div>
 </section>
 <!-- ═══════════════════════════════════════════
-     CTF TOOLS INTERACTIVOS
-═══════════════════════════════════════════ -->
-<section id="ctf">
-  <div class="section-header"><h2>// ctf tools</h2><span class="section-tag tag-p">interactive · encoders · decoders</span></div>
-  <div class="tools-grid">
-
-    <!-- BASE64 -->
-    <div class="tool-panel">
-      <h3>Base64 <span>encode / decode</span></h3>
-      <textarea id="b64-in" placeholder="Texto o Base64..."></textarea>
-      <div class="tool-row">
-        <button class="tbtn" onclick="b64enc()">Encode</button>
-        <button class="tbtn c" onclick="b64dec()">Decode</button>
-        <button class="tbtn c" onclick="b64url_enc()">URL-safe Enc</button>
-        <button class="tbtn c" onclick="b64url_dec()">URL-safe Dec</button>
-      </div>
-      <div class="out dim" id="b64-out">resultado</div>
-    </div>
-
-    <!-- ROT -->
-    <div class="tool-panel">
-      <h3>Caesar / ROT <span>todas las rotaciones</span></h3>
-      <textarea id="rot-in" placeholder="Texto cifrado..."></textarea>
-      <div class="tool-row">
-        <label style="font-size:11px;color:var(--text-muted);align-self:center">Shift:</label>
-        <input type="number" id="rot-n" value="13" style="width:65px;text-align:center" min="1" max="25">
-        <button class="tbtn" onclick="rotEnc()">Encode</button>
-        <button class="tbtn c" onclick="rotDec()">Decode</button>
-        <button class="tbtn g" onclick="rotBrute()">Brute 1-25</button>
-      </div>
-      <div class="out dim" id="rot-out">resultado</div>
-    </div>
-
-    <!-- HEX -->
-    <div class="tool-panel">
-      <h3>Hex <span>encode / decode / XOR</span></h3>
-      <textarea id="hex-in" placeholder="Texto o hex (48 65 6c 6c 6f)..."></textarea>
-      <div class="tool-row">
-        <button class="tbtn" onclick="hexEnc()">→ Hex</button>
-        <button class="tbtn c" onclick="hexDec()">Hex →</button>
-        <button class="tbtn c" onclick="hexXor()">XOR brute</button>
-        <button class="tbtn g" onclick="hexToInt()">Hex → Int</button>
-      </div>
-      <div class="out dim" id="hex-out">resultado</div>
-    </div>
-
-    <!-- URL/HTML -->
-    <div class="tool-panel">
-      <h3>URL / HTML / Unicode <span>encoding</span></h3>
-      <textarea id="url-in" placeholder="URL o texto..."></textarea>
-      <div class="tool-row">
-        <button class="tbtn" onclick="urlEnc()">URL Enc</button>
-        <button class="tbtn c" onclick="urlDec()">URL Dec</button>
-        <button class="tbtn" onclick="htmlEnc()">HTML Enc</button>
-        <button class="tbtn c" onclick="htmlDec()">HTML Dec</button>
-        <button class="tbtn g" onclick="unicodePts()">→ \uXXXX</button>
-      </div>
-      <div class="out dim" id="url-out">resultado</div>
-    </div>
-
-    <!-- HASH -->
-    <div class="tool-panel">
-      <h3>Hash <span>identify + generate</span></h3>
-      <textarea id="hash-in" placeholder="Hash para identificar, o texto para generar..." style="min-height:48px"></textarea>
-      <div class="tool-row">
-        <button class="tbtn c" onclick="identHash()">Identify</button>
-        <button class="tbtn" onclick="generateHashes()">Generate SHA-1/256/512</button>
-      </div>
-      <div class="hash-grid" id="hash-out" style="display:none"></div>
-    </div>
-
-    <!-- BINARY / MORSE -->
-    <div class="tool-panel">
-      <h3>Binary / Octal / Morse <span>converter</span></h3>
-      <textarea id="bin-in" placeholder="01001000 01101001 o texto o .- -- . ..."></textarea>
-      <div class="tool-row">
-        <button class="tbtn c" onclick="binDec()">Bin→Txt</button>
-        <button class="tbtn" onclick="textBin()">Txt→Bin</button>
-        <button class="tbtn c" onclick="octDec()">Oct→Txt</button>
-        <button class="tbtn" onclick="morseEnc()">→Morse</button>
-        <button class="tbtn c" onclick="morseDec()">Morse→</button>
-      </div>
-      <div class="out dim" id="bin-out">resultado</div>
-    </div>
-
-    <!-- NUMBER BASES -->
-    <div class="tool-panel">
-      <h3>Conversión de bases <span>2 / 8 / 10 / 16</span></h3>
-      <div class="tool-row">
-        <input type="text" id="base-in" placeholder="Valor..." style="flex:1">
-        <select id="base-from" style="width:90px">
-          <option value="10">Dec (10)</option>
-          <option value="2">Bin (2)</option>
-          <option value="8">Oct (8)</option>
-          <option value="16">Hex (16)</option>
-        </select>
-      </div>
-      <div class="tool-row">
-        <button class="tbtn" onclick="convertBases()">Convertir</button>
-      </div>
-      <div class="out dim" id="base-out">resultado</div>
-    </div>
-
-    <!-- JWT DECODER -->
-    <div class="tool-panel">
-      <h3>JWT Decoder <span>header · payload · forge</span></h3>
-      <textarea id="jwt-in" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
-      <div class="tool-row">
-        <button class="tbtn" onclick="jwtDecode()">Decode</button>
-        <button class="tbtn c" onclick="jwtNoneAlg()">Forge none-alg</button>
-      </div>
-      <div class="out dim" id="jwt-out">resultado</div>
-    </div>
-
-    <!-- CIPHER TOOLS -->
-    <div class="tool-panel">
-      <h3>Cifrados clásicos <span>atbash · vigenère</span></h3>
-      <div class="tabs">
-        <button class="tab active" onclick="switchCipher(this,'atbash')">Atbash</button>
-        <button class="tab" onclick="switchCipher(this,'vigenere')">Vigenère</button>
-      </div>
-      <textarea id="cipher-in" placeholder="Texto..."></textarea>
-      <div id="cipher-atbash" class="tab-content active">
-        <div class="tool-row">
-          <button class="tbtn" onclick="atbash()">Cifrar / Descifrar</button>
-        </div>
-      </div>
-      <div id="cipher-vigenere" class="tab-content">
-        <div class="tool-row">
-          <input type="text" id="vig-key" placeholder="Clave (ej: SECRET)" style="width:160px">
-          <button class="tbtn" onclick="vigEnc()">Enc</button>
-          <button class="tbtn c" onclick="vigDec()">Dec</button>
-        </div>
-      </div>
-      <div class="out dim" id="cipher-out">resultado</div>
-    </div>
-
-    <!-- ENCODER CHAINING -->
-    <div class="tool-panel">
-      <h3>Encoder chain <span>multiple rounds — estilo CyberChef</span></h3>
-      <textarea id="chain-in" placeholder="Texto de entrada..."></textarea>
-      <div class="tool-row" style="flex-wrap:wrap">
-        <select id="chain-op1"><option value="b64e">B64 enc</option><option value="b64d">B64 dec</option><option value="url">URL enc</option><option value="urld">URL dec</option><option value="hex">→ Hex</option><option value="hexd">Hex →</option><option value="rev">Reverse</option><option value="upper">Uppercase</option><option value="lower">Lowercase</option></select>
-        <select id="chain-op2"><option value="">— op 2 —</option><option value="b64e">B64 enc</option><option value="b64d">B64 dec</option><option value="url">URL enc</option><option value="urld">URL dec</option><option value="hex">→ Hex</option><option value="hexd">Hex →</option><option value="rev">Reverse</option></select>
-        <select id="chain-op3"><option value="">— op 3 —</option><option value="b64e">B64 enc</option><option value="b64d">B64 dec</option><option value="url">URL enc</option><option value="urld">URL dec</option><option value="hex">→ Hex</option><option value="rev">Reverse</option></select>
-        <button class="tbtn" onclick="runChain()">Run chain</button>
-      </div>
-      <div class="out dim" id="chain-out">resultado</div>
-    </div>
-
-  </div>
-
-  <div style="margin-top:1.2rem">
-    <div class="tip g"><span class="tip-text">Magic bytes: <code>PNG</code>=89504E47 · <code>JPG</code>=FFD8FFE0 · <code>GIF</code>=47494638 · <code>PDF</code>=25504446 · <code>ZIP</code>=504B0304 · <code>ELF</code>=7F454C46 · <code>PE</code>=4D5A9000</span></div>
-    <div class="tip p"><span class="tip-text">Stego rápido: <code>strings -n 8 file</code> · <code>binwalk -e file</code> · <code>foremost file</code> · <code>exiftool file</code> · <code>zsteg img.png</code> · <code>steghide extract -sf file</code></span></div>
-    <div class="tip"><span class="tip-text">CTF quick-wins: <code>file *</code> · <code>xxd f | head</code> · <code>grep -r "HTB{" .</code> · <code>grep -r "flag{" .</code> · <code>grep -rP "CTF\{" .</code></span></div>
-  </div>
-</section>
-<!-- ═══════════════════════════════════════════
      CRYPTO
 ═══════════════════════════════════════════ -->
 <section id="crypto">
@@ -728,7 +570,6 @@
 
   </div>
 </section>
-
 <!-- ═══════════════════════════════════════════
      FORENSICS
 ═══════════════════════════════════════════ -->
@@ -807,121 +648,102 @@
   </div>
 </section>
 <!-- ═══════════════════════════════════════════
-     REGEX TESTER
+     GIT
 ═══════════════════════════════════════════ -->
-<section id="regex">
-  <div class="section-header"><h2>// regex tester</h2><span class="section-tag tag-g">live · highlights · presets</span></div>
-  <div class="tool-panel" style="max-width:960px">
-    <div style="display:flex;gap:.5rem;margin-bottom:.5rem;flex-wrap:wrap">
-      <input type="text" id="rx-p" placeholder="Regex pattern..." style="flex:2;min-width:200px" oninput="runRx()">
-      <input type="text" id="rx-f" value="gm" style="width:65px" placeholder="flags" oninput="runRx()">
-      <select id="rx-preset" onchange="loadRxP()" style="flex:1;min-width:180px">
-        <option value="">— Presets —</option>
-        <option value="ip">IPv4 Address</option>
-        <option value="ip6">IPv6 Address</option>
-        <option value="cidr">CIDR notation</option>
-        <option value="email">Email</option>
-        <option value="url">URL</option>
-        <option value="mac">MAC Address</option>
-        <option value="jwt">JWT Token</option>
-        <option value="b64">Base64 string</option>
-        <option value="hash32">MD5/Hash 32</option>
-        <option value="hash40">SHA1/Hash 40</option>
-        <option value="hash64">SHA256/Hash 64</option>
-        <option value="cve">CVE ID</option>
-        <option value="privkey">Private key block</option>
-        <option value="winpath">Windows path</option>
-        <option value="unixpath">Unix path</option>
-        <option value="sqlstr">SQL string literal</option>
-        <option value="xss">XSS pattern</option>
-        <option value="ssn">Social Security Number</option>
-        <option value="cc">Credit card</option>
-      </select>
-    </div>
-    <textarea id="rx-t" style="min-height:110px" placeholder="Texto de prueba..." oninput="runRx()">192.168.1.1 y tambien 10.0.0.254
-admin@example.com y root@hack.local
-JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.cGF5bG9hZA.sig
-MAC: 00:11:22:33:44:55 y AA-BB-CC-DD-EE-FF
-CVE-2021-44228 Log4Shell - CVSS 10.0
-SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</textarea>
-    <div style="display:flex;gap:1rem;align-items:center;margin:.4rem 0;font-size:12px;font-family:var(--mono)">
-      <span id="rx-count" style="color:var(--green)">0 matches</span>
-      <span id="rx-err" style="color:var(--red)"></span>
-    </div>
-    <div class="out" id="rx-out" style="min-height:80px;white-space:pre-wrap;overflow-y:auto;max-height:250px">resultado</div>
-  </div>
-</section>
-<!-- ═══════════════════════════════════════════
-     MISC TOOLS
-═══════════════════════════════════════════ -->
-<section id="misc">
-  <div class="section-header"><h2>// misc tools</h2><span class="section-tag tag-c">permisos · subred · cron · timestamp</span></div>
-  <div class="tools-grid">
+<section id="git">
+  <div class="section-header"><h2>// git</h2><span class="section-tag tag-a">config · commit · branch · remote · undo</span></div>
+  <div class="cards-grid">
 
-    <!-- PERMISOS -->
-    <div class="tool-panel">
-      <h3>Calculadora permisos Unix</h3>
-      <div class="perms-grid">
-        <div class="perm-group"><div class="perm-group-label">owner (u)</div><div class="perm-checks"><div class="perm-check"><input type="checkbox" id="ur" checked onchange="calcP()"><label for="ur">r</label></div><div class="perm-check"><input type="checkbox" id="uw" checked onchange="calcP()"><label for="uw">w</label></div><div class="perm-check"><input type="checkbox" id="ux" onchange="calcP()"><label for="ux">x</label></div></div></div>
-        <div class="perm-group"><div class="perm-group-label">group (g)</div><div class="perm-checks"><div class="perm-check"><input type="checkbox" id="gr" checked onchange="calcP()"><label for="gr">r</label></div><div class="perm-check"><input type="checkbox" id="gw" onchange="calcP()"><label for="gw">w</label></div><div class="perm-check"><input type="checkbox" id="gx" onchange="calcP()"><label for="gx">x</label></div></div></div>
-        <div class="perm-group"><div class="perm-group-label">others (o)</div><div class="perm-checks"><div class="perm-check"><input type="checkbox" id="or2" checked onchange="calcP()"><label for="or2">r</label></div><div class="perm-check"><input type="checkbox" id="ow2" onchange="calcP()"><label for="ow2">w</label></div><div class="perm-check"><input type="checkbox" id="ox2" onchange="calcP()"><label for="ox2">x</label></div></div></div>
-      </div>
-      <div class="perm-octal" id="p-oct">644</div>
-      <div class="perm-symbolic" id="p-sym">-rw-r--r--</div>
-      <div style="text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px" id="p-cmd">chmod 644 fichero</div>
-    </div>
-
-    <!-- SUBNET -->
-    <div class="tool-panel">
-      <h3>Calculadora de subred <span>IPv4</span></h3>
-      <div class="tool-row">
-        <input type="text" id="sn-in" value="192.168.1.0/24" style="flex:1">
-        <button class="tbtn" onclick="calcSN()">Calcular</button>
-      </div>
-      <div id="sn-out"></div>
-    </div>
-
-    <!-- CRON -->
-    <div class="tool-panel">
-      <h3>Cron builder <span>5 campos</span></h3>
-      <div class="cron-fields">
-        <div class="cron-field"><label>min</label><input type="text" id="cr-min" value="0" oninput="buildCron()"></div>
-        <div class="cron-field"><label>hora</label><input type="text" id="cr-hr" value="*" oninput="buildCron()"></div>
-        <div class="cron-field"><label>dia mes</label><input type="text" id="cr-dm" value="*" oninput="buildCron()"></div>
-        <div class="cron-field"><label>mes</label><input type="text" id="cr-mo" value="*" oninput="buildCron()"></div>
-        <div class="cron-field"><label>dia sem</label><input type="text" id="cr-dw" value="*" oninput="buildCron()"></div>
-      </div>
-      <div class="cron-result" id="cr-expr">0 * * * *</div>
-      <div class="cron-desc" id="cr-desc"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:.5rem">
-        <button class="tbtn c" onclick="setCron('0 * * * *')">Cada hora</button>
-        <button class="tbtn c" onclick="setCron('0 0 * * *')">Medianoche</button>
-        <button class="tbtn c" onclick="setCron('*/5 * * * *')">Cada 5 min</button>
-        <button class="tbtn c" onclick="setCron('0 0 * * 1')">Cada lunes</button>
-        <button class="tbtn c" onclick="setCron('0 */6 * * *')">Cada 6h</button>
-        <button class="tbtn c" onclick="setCron('0 0 1 * *')">Mensual</button>
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">config &amp; init</span><span class="cmd-card-desc">arranque</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">git config --global user.name "Nombre"</span><span class="cmd-comment">nombre global</span></div>
+        <div class="cmd-item"><span class="cmd-code">git config --global user.email "tu@mail.com"</span><span class="cmd-comment">email global</span></div>
+        <div class="cmd-item"><span class="cmd-code">git config --list</span><span class="cmd-comment">ver config</span></div>
+        <div class="cmd-item"><span class="cmd-code">git init</span><span class="cmd-comment">crear repo local</span></div>
+        <div class="cmd-item"><span class="cmd-code">git clone https://github.com/user/repo.git</span><span class="cmd-comment">clonar repo</span></div>
+        <div class="cmd-item"><span class="cmd-code">git clone git@github.com:user/repo.git</span><span class="cmd-comment">clonar (SSH)</span></div>
+        <div class="cmd-item"><span class="cmd-code">git clone --depth 1 https://github.com/user/repo.git</span><span class="cmd-comment">shallow (rápido)</span></div>
       </div>
     </div>
 
-    <!-- TIMESTAMP -->
-    <div class="tool-panel">
-      <h3>Timestamp converter <span>Unix ↔ fecha</span></h3>
-      <div class="tool-row">
-        <input type="text" id="ts-in" placeholder="Unix ts o fecha ISO..." style="flex:1">
-        <button class="tbtn" onclick="tsConv()">Convertir</button>
-        <button class="tbtn c" onclick="tsNow()">Now</button>
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">cambios básicos</span><span class="cmd-card-desc">stage · commit · diff</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">git status</span><span class="cmd-comment">estado actual</span></div>
+        <div class="cmd-item"><span class="cmd-code">git status -s</span><span class="cmd-comment">estado corto</span></div>
+        <div class="cmd-item"><span class="cmd-code">git add .</span><span class="cmd-comment">añadir todo</span></div>
+        <div class="cmd-item"><span class="cmd-code">git add -p</span><span class="cmd-comment">añadir por trozos</span></div>
+        <div class="cmd-item"><span class="cmd-code">git commit -m "mensaje"</span><span class="cmd-comment">commit</span></div>
+        <div class="cmd-item"><span class="cmd-code">git commit -am "mensaje"</span><span class="cmd-comment">add + commit (tracked)</span></div>
+        <div class="cmd-item"><span class="cmd-code">git diff</span><span class="cmd-comment">cambios sin stage</span></div>
+        <div class="cmd-item"><span class="cmd-code">git diff --staged</span><span class="cmd-comment">cambios en stage</span></div>
+        <div class="cmd-item"><span class="cmd-code">git rm --cached fichero</span><span class="cmd-comment">quitar del stage</span></div>
+        <div class="cmd-item"><span class="cmd-code">git mv viejo nuevo</span><span class="cmd-comment">renombrar</span></div>
       </div>
-      <div class="out dim" id="ts-out">resultado</div>
     </div>
 
-    <!-- CIDR / IP TOOLS -->
-    <div class="tool-panel">
-      <h3>IP range expander <span>CIDR → lista</span></h3>
-      <div class="tool-row">
-        <input type="text" id="ip-range" placeholder="192.168.1.0/28" style="flex:1">
-        <button class="tbtn" onclick="expandCIDR()">Expandir</button>
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">ramas (branch)</span><span class="cmd-card-desc">branch · merge</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">git branch</span><span class="cmd-comment">listar ramas</span></div>
+        <div class="cmd-item"><span class="cmd-code">git branch -a</span><span class="cmd-comment">incluir remotas</span></div>
+        <div class="cmd-item"><span class="cmd-code">git switch -c feature</span><span class="cmd-comment">crear + cambiar</span></div>
+        <div class="cmd-item"><span class="cmd-code">git checkout -b feature</span><span class="cmd-comment">crear + cambiar (clásico)</span></div>
+        <div class="cmd-item"><span class="cmd-code">git switch main</span><span class="cmd-comment">cambiar de rama</span></div>
+        <div class="cmd-item"><span class="cmd-code">git merge feature</span><span class="cmd-comment">fusionar rama</span></div>
+        <div class="cmd-item"><span class="cmd-code">git branch -d feature</span><span class="cmd-comment">borrar rama</span></div>
+        <div class="cmd-item"><span class="cmd-code">git branch -D feature</span><span class="cmd-comment">borrar forzado</span></div>
+        <div class="cmd-item"><span class="cmd-code">git branch -m nuevo-nombre</span><span class="cmd-comment">renombrar rama</span></div>
+        <div class="cmd-item"><span class="cmd-code">git rebase main</span><span class="cmd-comment">rebase sobre main</span></div>
       </div>
-      <div class="out dim" id="ip-out">resultado</div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">remoto &amp; sync</span><span class="cmd-card-desc">push · pull · fetch</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">git remote -v</span><span class="cmd-comment">ver remotos</span></div>
+        <div class="cmd-item"><span class="cmd-code">git remote add origin git@github.com:user/repo.git</span><span class="cmd-comment">añadir remoto</span></div>
+        <div class="cmd-item"><span class="cmd-code">git remote set-url origin git@github.com:user/repo.git</span><span class="cmd-comment">cambiar remoto</span></div>
+        <div class="cmd-item"><span class="cmd-code">git push -u origin main</span><span class="cmd-comment">primer push (set upstream)</span></div>
+        <div class="cmd-item"><span class="cmd-code">git push</span><span class="cmd-comment">subir cambios</span></div>
+        <div class="cmd-item"><span class="cmd-code">git push origin --delete rama</span><span class="cmd-comment">borrar rama remota</span></div>
+        <div class="cmd-item"><span class="cmd-code">git pull</span><span class="cmd-comment">traer + merge</span></div>
+        <div class="cmd-item"><span class="cmd-code">git pull --rebase</span><span class="cmd-comment">traer + rebase</span></div>
+        <div class="cmd-item"><span class="cmd-code">git fetch --all --prune</span><span class="cmd-comment">traer sin merge + limpiar</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">deshacer / reset</span><span class="cmd-card-desc">undo · revert</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">git restore fichero</span><span class="cmd-comment">descartar cambios</span></div>
+        <div class="cmd-item"><span class="cmd-code">git restore --staged fichero</span><span class="cmd-comment">sacar del stage</span></div>
+        <div class="cmd-item"><span class="cmd-code">git commit --amend -m "nuevo msg"</span><span class="cmd-comment">corregir último commit</span></div>
+        <div class="cmd-item"><span class="cmd-code">git reset --soft HEAD~1</span><span class="cmd-comment">deshacer commit (mantiene)</span></div>
+        <div class="cmd-item"><span class="cmd-code">git reset --hard HEAD~1</span><span class="cmd-comment">deshacer commit (BORRA)</span></div>
+        <div class="cmd-item"><span class="cmd-code">git reset --hard origin/main</span><span class="cmd-comment">igualar a remoto</span></div>
+        <div class="cmd-item"><span class="cmd-code">git revert HEAD</span><span class="cmd-comment">revertir (commit nuevo)</span></div>
+        <div class="cmd-item"><span class="cmd-code">git clean -fd</span><span class="cmd-comment">borrar no-trackeados</span></div>
+        <div class="cmd-item"><span class="cmd-code">git checkout -- .</span><span class="cmd-comment">descartar todo (clásico)</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card">
+      <div class="cmd-card-header"><span class="cmd-card-title">log · stash · tag</span><span class="cmd-card-desc">historial &amp; extras</span></div>
+      <div class="cmd-list">
+        <div class="cmd-item"><span class="cmd-code">git log --oneline --graph --all</span><span class="cmd-comment">historial visual</span></div>
+        <div class="cmd-item"><span class="cmd-code">git log -p -2</span><span class="cmd-comment">últimos 2 con diff</span></div>
+        <div class="cmd-item"><span class="cmd-code">git log --grep="texto"</span><span class="cmd-comment">buscar en mensajes</span></div>
+        <div class="cmd-item"><span class="cmd-code">git show HEAD</span><span class="cmd-comment">ver último commit</span></div>
+        <div class="cmd-item"><span class="cmd-code">git blame fichero</span><span class="cmd-comment">quién cambió cada línea</span></div>
+        <div class="cmd-item"><span class="cmd-code">git stash</span><span class="cmd-comment">guardar cambios temp</span></div>
+        <div class="cmd-item"><span class="cmd-code">git stash pop</span><span class="cmd-comment">recuperar stash</span></div>
+        <div class="cmd-item"><span class="cmd-code">git stash list</span><span class="cmd-comment">listar stashes</span></div>
+        <div class="cmd-item"><span class="cmd-code">git cherry-pick HASH</span><span class="cmd-comment">traer un commit suelto</span></div>
+        <div class="cmd-item"><span class="cmd-code">git tag -a v1.0 -m "release"</span><span class="cmd-comment">crear tag anotado</span></div>
+        <div class="cmd-item"><span class="cmd-code">git push origin --tags</span><span class="cmd-comment">subir tags</span></div>
+      </div>
     </div>
 
   </div>
@@ -1124,6 +946,285 @@ SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</textar
         <div class="cmd-item"><span class="cmd-code">searchsploit -u</span><span class="cmd-comment">actualizar ExploitDB local</span></div>
         <div class="cmd-item"><span class="cmd-code">searchsploit apache 2.4</span><span class="cmd-comment">buscar exploits locales</span></div>
       </div>
+    </div>
+
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     CTF TOOLS INTERACTIVOS
+═══════════════════════════════════════════ -->
+<section id="ctf">
+  <div class="section-header"><h2>// ctf tools</h2><span class="section-tag tag-p">interactive · encoders · decoders</span></div>
+  <div class="tools-grid">
+
+    <!-- BASE64 -->
+    <div class="tool-panel">
+      <h3>Base64 <span>encode / decode</span></h3>
+      <textarea id="b64-in" placeholder="Texto o Base64..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn" onclick="b64enc()">Encode</button>
+        <button class="tbtn c" onclick="b64dec()">Decode</button>
+        <button class="tbtn c" onclick="b64url_enc()">URL-safe Enc</button>
+        <button class="tbtn c" onclick="b64url_dec()">URL-safe Dec</button>
+      </div>
+      <div class="out dim" id="b64-out">resultado</div>
+    </div>
+
+    <!-- ROT -->
+    <div class="tool-panel">
+      <h3>Caesar / ROT <span>todas las rotaciones</span></h3>
+      <textarea id="rot-in" placeholder="Texto cifrado..."></textarea>
+      <div class="tool-row">
+        <label style="font-size:11px;color:var(--text-muted);align-self:center">Shift:</label>
+        <input type="number" id="rot-n" value="13" style="width:65px;text-align:center" min="1" max="25">
+        <button class="tbtn" onclick="rotEnc()">Encode</button>
+        <button class="tbtn c" onclick="rotDec()">Decode</button>
+        <button class="tbtn g" onclick="rotBrute()">Brute 1-25</button>
+      </div>
+      <div class="out dim" id="rot-out">resultado</div>
+    </div>
+
+    <!-- HEX -->
+    <div class="tool-panel">
+      <h3>Hex <span>encode / decode / XOR</span></h3>
+      <textarea id="hex-in" placeholder="Texto o hex (48 65 6c 6c 6f)..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn" onclick="hexEnc()">→ Hex</button>
+        <button class="tbtn c" onclick="hexDec()">Hex →</button>
+        <button class="tbtn c" onclick="hexXor()">XOR brute</button>
+        <button class="tbtn g" onclick="hexToInt()">Hex → Int</button>
+      </div>
+      <div class="out dim" id="hex-out">resultado</div>
+    </div>
+
+    <!-- URL/HTML -->
+    <div class="tool-panel">
+      <h3>URL / HTML / Unicode <span>encoding</span></h3>
+      <textarea id="url-in" placeholder="URL o texto..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn" onclick="urlEnc()">URL Enc</button>
+        <button class="tbtn c" onclick="urlDec()">URL Dec</button>
+        <button class="tbtn" onclick="htmlEnc()">HTML Enc</button>
+        <button class="tbtn c" onclick="htmlDec()">HTML Dec</button>
+        <button class="tbtn g" onclick="unicodePts()">→ \uXXXX</button>
+      </div>
+      <div class="out dim" id="url-out">resultado</div>
+    </div>
+
+    <!-- HASH -->
+    <div class="tool-panel">
+      <h3>Hash <span>identify + generate</span></h3>
+      <textarea id="hash-in" placeholder="Hash para identificar, o texto para generar..." style="min-height:48px"></textarea>
+      <div class="tool-row">
+        <button class="tbtn c" onclick="identHash()">Identify</button>
+        <button class="tbtn" onclick="generateHashes()">Generate SHA-1/256/512</button>
+      </div>
+      <div class="hash-grid" id="hash-out" style="display:none"></div>
+    </div>
+
+    <!-- BINARY / MORSE -->
+    <div class="tool-panel">
+      <h3>Binary / Octal / Morse <span>converter</span></h3>
+      <textarea id="bin-in" placeholder="01001000 01101001 o texto o .- -- . ..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn c" onclick="binDec()">Bin→Txt</button>
+        <button class="tbtn" onclick="textBin()">Txt→Bin</button>
+        <button class="tbtn c" onclick="octDec()">Oct→Txt</button>
+        <button class="tbtn" onclick="morseEnc()">→Morse</button>
+        <button class="tbtn c" onclick="morseDec()">Morse→</button>
+      </div>
+      <div class="out dim" id="bin-out">resultado</div>
+    </div>
+
+    <!-- NUMBER BASES -->
+    <div class="tool-panel">
+      <h3>Conversión de bases <span>2 / 8 / 10 / 16</span></h3>
+      <div class="tool-row">
+        <input type="text" id="base-in" placeholder="Valor..." style="flex:1">
+        <select id="base-from" style="width:90px">
+          <option value="10">Dec (10)</option>
+          <option value="2">Bin (2)</option>
+          <option value="8">Oct (8)</option>
+          <option value="16">Hex (16)</option>
+        </select>
+      </div>
+      <div class="tool-row">
+        <button class="tbtn" onclick="convertBases()">Convertir</button>
+      </div>
+      <div class="out dim" id="base-out">resultado</div>
+    </div>
+
+    <!-- JWT DECODER -->
+    <div class="tool-panel">
+      <h3>JWT Decoder <span>header · payload · forge</span></h3>
+      <textarea id="jwt-in" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
+      <div class="tool-row">
+        <button class="tbtn" onclick="jwtDecode()">Decode</button>
+        <button class="tbtn c" onclick="jwtNoneAlg()">Forge none-alg</button>
+      </div>
+      <div class="out dim" id="jwt-out">resultado</div>
+    </div>
+
+    <!-- CIPHER TOOLS -->
+    <div class="tool-panel">
+      <h3>Cifrados clásicos <span>atbash · vigenère</span></h3>
+      <div class="tabs">
+        <button class="tab active" onclick="switchCipher(this,'atbash')">Atbash</button>
+        <button class="tab" onclick="switchCipher(this,'vigenere')">Vigenère</button>
+      </div>
+      <textarea id="cipher-in" placeholder="Texto..."></textarea>
+      <div id="cipher-atbash" class="tab-content active">
+        <div class="tool-row">
+          <button class="tbtn" onclick="atbash()">Cifrar / Descifrar</button>
+        </div>
+      </div>
+      <div id="cipher-vigenere" class="tab-content">
+        <div class="tool-row">
+          <input type="text" id="vig-key" placeholder="Clave (ej: SECRET)" style="width:160px">
+          <button class="tbtn" onclick="vigEnc()">Enc</button>
+          <button class="tbtn c" onclick="vigDec()">Dec</button>
+        </div>
+      </div>
+      <div class="out dim" id="cipher-out">resultado</div>
+    </div>
+
+    <!-- ENCODER CHAINING -->
+    <div class="tool-panel">
+      <h3>Encoder chain <span>multiple rounds — estilo CyberChef</span></h3>
+      <textarea id="chain-in" placeholder="Texto de entrada..."></textarea>
+      <div class="tool-row" style="flex-wrap:wrap">
+        <select id="chain-op1"><option value="b64e">B64 enc</option><option value="b64d">B64 dec</option><option value="url">URL enc</option><option value="urld">URL dec</option><option value="hex">→ Hex</option><option value="hexd">Hex →</option><option value="rev">Reverse</option><option value="upper">Uppercase</option><option value="lower">Lowercase</option></select>
+        <select id="chain-op2"><option value="">— op 2 —</option><option value="b64e">B64 enc</option><option value="b64d">B64 dec</option><option value="url">URL enc</option><option value="urld">URL dec</option><option value="hex">→ Hex</option><option value="hexd">Hex →</option><option value="rev">Reverse</option></select>
+        <select id="chain-op3"><option value="">— op 3 —</option><option value="b64e">B64 enc</option><option value="b64d">B64 dec</option><option value="url">URL enc</option><option value="urld">URL dec</option><option value="hex">→ Hex</option><option value="rev">Reverse</option></select>
+        <button class="tbtn" onclick="runChain()">Run chain</button>
+      </div>
+      <div class="out dim" id="chain-out">resultado</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:1.2rem">
+    <div class="tip g"><span class="tip-text">Magic bytes: <code>PNG</code>=89504E47 · <code>JPG</code>=FFD8FFE0 · <code>GIF</code>=47494638 · <code>PDF</code>=25504446 · <code>ZIP</code>=504B0304 · <code>ELF</code>=7F454C46 · <code>PE</code>=4D5A9000</span></div>
+    <div class="tip p"><span class="tip-text">Stego rápido: <code>strings -n 8 file</code> · <code>binwalk -e file</code> · <code>foremost file</code> · <code>exiftool file</code> · <code>zsteg img.png</code> · <code>steghide extract -sf file</code></span></div>
+    <div class="tip"><span class="tip-text">CTF quick-wins: <code>file *</code> · <code>xxd f | head</code> · <code>grep -r "HTB{" .</code> · <code>grep -r "flag{" .</code> · <code>grep -rP "CTF\{" .</code></span></div>
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     REGEX TESTER
+═══════════════════════════════════════════ -->
+<section id="regex">
+  <div class="section-header"><h2>// regex tester</h2><span class="section-tag tag-g">live · highlights · presets</span></div>
+  <div class="tool-panel" style="max-width:960px">
+    <div style="display:flex;gap:.5rem;margin-bottom:.5rem;flex-wrap:wrap">
+      <input type="text" id="rx-p" placeholder="Regex pattern..." style="flex:2;min-width:200px" oninput="runRx()">
+      <input type="text" id="rx-f" value="gm" style="width:65px" placeholder="flags" oninput="runRx()">
+      <select id="rx-preset" onchange="loadRxP()" style="flex:1;min-width:180px">
+        <option value="">— Presets —</option>
+        <option value="ip">IPv4 Address</option>
+        <option value="ip6">IPv6 Address</option>
+        <option value="cidr">CIDR notation</option>
+        <option value="email">Email</option>
+        <option value="url">URL</option>
+        <option value="mac">MAC Address</option>
+        <option value="jwt">JWT Token</option>
+        <option value="b64">Base64 string</option>
+        <option value="hash32">MD5/Hash 32</option>
+        <option value="hash40">SHA1/Hash 40</option>
+        <option value="hash64">SHA256/Hash 64</option>
+        <option value="cve">CVE ID</option>
+        <option value="privkey">Private key block</option>
+        <option value="winpath">Windows path</option>
+        <option value="unixpath">Unix path</option>
+        <option value="sqlstr">SQL string literal</option>
+        <option value="xss">XSS pattern</option>
+        <option value="ssn">Social Security Number</option>
+        <option value="cc">Credit card</option>
+      </select>
+    </div>
+    <textarea id="rx-t" style="min-height:110px" placeholder="Texto de prueba..." oninput="runRx()">192.168.1.1 y tambien 10.0.0.254
+admin@example.com y root@hack.local
+JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.cGF5bG9hZA.sig
+MAC: 00:11:22:33:44:55 y AA-BB-CC-DD-EE-FF
+CVE-2021-44228 Log4Shell - CVSS 10.0
+SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</textarea>
+    <div style="display:flex;gap:1rem;align-items:center;margin:.4rem 0;font-size:12px;font-family:var(--mono)">
+      <span id="rx-count" style="color:var(--green)">0 matches</span>
+      <span id="rx-err" style="color:var(--red)"></span>
+    </div>
+    <div class="out" id="rx-out" style="min-height:80px;white-space:pre-wrap;overflow-y:auto;max-height:250px">resultado</div>
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════
+     MISC TOOLS
+═══════════════════════════════════════════ -->
+<section id="misc">
+  <div class="section-header"><h2>// misc tools</h2><span class="section-tag tag-c">permisos · subred · cron · timestamp</span></div>
+  <div class="tools-grid">
+
+    <!-- PERMISOS -->
+    <div class="tool-panel">
+      <h3>Calculadora permisos Unix</h3>
+      <div class="perms-grid">
+        <div class="perm-group"><div class="perm-group-label">owner (u)</div><div class="perm-checks"><div class="perm-check"><input type="checkbox" id="ur" checked onchange="calcP()"><label for="ur">r</label></div><div class="perm-check"><input type="checkbox" id="uw" checked onchange="calcP()"><label for="uw">w</label></div><div class="perm-check"><input type="checkbox" id="ux" onchange="calcP()"><label for="ux">x</label></div></div></div>
+        <div class="perm-group"><div class="perm-group-label">group (g)</div><div class="perm-checks"><div class="perm-check"><input type="checkbox" id="gr" checked onchange="calcP()"><label for="gr">r</label></div><div class="perm-check"><input type="checkbox" id="gw" onchange="calcP()"><label for="gw">w</label></div><div class="perm-check"><input type="checkbox" id="gx" onchange="calcP()"><label for="gx">x</label></div></div></div>
+        <div class="perm-group"><div class="perm-group-label">others (o)</div><div class="perm-checks"><div class="perm-check"><input type="checkbox" id="or2" checked onchange="calcP()"><label for="or2">r</label></div><div class="perm-check"><input type="checkbox" id="ow2" onchange="calcP()"><label for="ow2">w</label></div><div class="perm-check"><input type="checkbox" id="ox2" onchange="calcP()"><label for="ox2">x</label></div></div></div>
+      </div>
+      <div class="perm-octal" id="p-oct">644</div>
+      <div class="perm-symbolic" id="p-sym">-rw-r--r--</div>
+      <div style="text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px" id="p-cmd">chmod 644 fichero</div>
+    </div>
+
+    <!-- SUBNET -->
+    <div class="tool-panel">
+      <h3>Calculadora de subred <span>IPv4</span></h3>
+      <div class="tool-row">
+        <input type="text" id="sn-in" value="192.168.1.0/24" style="flex:1">
+        <button class="tbtn" onclick="calcSN()">Calcular</button>
+      </div>
+      <div id="sn-out"></div>
+    </div>
+
+    <!-- CRON -->
+    <div class="tool-panel">
+      <h3>Cron builder <span>5 campos</span></h3>
+      <div class="cron-fields">
+        <div class="cron-field"><label>min</label><input type="text" id="cr-min" value="0" oninput="buildCron()"></div>
+        <div class="cron-field"><label>hora</label><input type="text" id="cr-hr" value="*" oninput="buildCron()"></div>
+        <div class="cron-field"><label>dia mes</label><input type="text" id="cr-dm" value="*" oninput="buildCron()"></div>
+        <div class="cron-field"><label>mes</label><input type="text" id="cr-mo" value="*" oninput="buildCron()"></div>
+        <div class="cron-field"><label>dia sem</label><input type="text" id="cr-dw" value="*" oninput="buildCron()"></div>
+      </div>
+      <div class="cron-result" id="cr-expr">0 * * * *</div>
+      <div class="cron-desc" id="cr-desc"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:.5rem">
+        <button class="tbtn c" onclick="setCron('0 * * * *')">Cada hora</button>
+        <button class="tbtn c" onclick="setCron('0 0 * * *')">Medianoche</button>
+        <button class="tbtn c" onclick="setCron('*/5 * * * *')">Cada 5 min</button>
+        <button class="tbtn c" onclick="setCron('0 0 * * 1')">Cada lunes</button>
+        <button class="tbtn c" onclick="setCron('0 */6 * * *')">Cada 6h</button>
+        <button class="tbtn c" onclick="setCron('0 0 1 * *')">Mensual</button>
+      </div>
+    </div>
+
+    <!-- TIMESTAMP -->
+    <div class="tool-panel">
+      <h3>Timestamp converter <span>Unix ↔ fecha</span></h3>
+      <div class="tool-row">
+        <input type="text" id="ts-in" placeholder="Unix ts o fecha ISO..." style="flex:1">
+        <button class="tbtn" onclick="tsConv()">Convertir</button>
+        <button class="tbtn c" onclick="tsNow()">Now</button>
+      </div>
+      <div class="out dim" id="ts-out">resultado</div>
+    </div>
+
+    <!-- CIDR / IP TOOLS -->
+    <div class="tool-panel">
+      <h3>IP range expander <span>CIDR → lista</span></h3>
+      <div class="tool-row">
+        <input type="text" id="ip-range" placeholder="192.168.1.0/28" style="flex:1">
+        <button class="tbtn" onclick="expandCIDR()">Expandir</button>
+      </div>
+      <div class="out dim" id="ip-out">resultado</div>
     </div>
 
   </div>
